@@ -4,18 +4,22 @@ import time
 import datetime as dt
 
 class Thread(threading.Thread):
+  """
+  This is a custom Thread class that uses
+  - Stop events to completely stop a thread
+  - Loops a function given a poll time
 
+
+  """
   def __init__(self, name: str, command, **kwargs) -> None:
     '''
         Creates a thread with the following parameters
             Parameters:
                 name (str): name of the thread
                 command (function): partial or full function 
-                stop_event (Event): Event to stop the thread from running
                 kwargs["time"] (float) : by default 2 seconds unless specified (poll rate or function run rate)
     '''
     super().__init__()
-    # Poll time by default is 2 unless specified
     self.poll_time = None if "time" not in kwargs else kwargs.pop("time")
     self.stop_event = Event()
     self.name = name
@@ -51,7 +55,7 @@ class Thread(threading.Thread):
 
   def stop(self):
     self.stop_event.set()
-  
+
   def is_Done(self):
     return self.stop_event.is_set()
 
