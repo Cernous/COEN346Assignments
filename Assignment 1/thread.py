@@ -6,7 +6,8 @@ import logging
 
 logging.basicConfig(
   filename="Assignment 1/output.txt",
-  level=logging.INFO
+  level=logging.INFO,
+  filemode='w'
 )
 
 logger = logging.getLogger()

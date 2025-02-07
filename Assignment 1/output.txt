@@ -1,30 +1,398 @@
-INFO:root:[12:46:55]:  Thread 1 running
-INFO:root:[12:46:55]:  Thread 10 running
-INFO:root:[12:46:55]:  Thread 11 running
-INFO:root:[12:46:55]:  Thread 100 running
-INFO:root:[12:46:55]:  Thread 100 done running [3304]
-INFO:root:[12:46:55]:  Thread 101 running
-INFO:root:[12:46:55]:  Thread 101 done running [8221]
-INFO:root:[12:46:55]:  Thread 11 done running [3304, 8221]
-INFO:root:[12:46:55]:  Thread 110 running
-INFO:root:[12:46:55]:  Thread 111 running
-INFO:root:[12:46:55]:  Thread 111 done running [26849]
-INFO:root:[12:46:55]:  Thread 1000 running
-INFO:root:[12:46:55]:  Thread 1000 done running [14038]
-INFO:root:[12:46:55]:  Thread 110 done running [14038, 26849]
-INFO:root:[12:46:55]:  Thread 10 done running [3304, 8221, 14038, 26849]
-INFO:root:[12:46:55]:  Thread 1001 running
-INFO:root:[12:46:55]:  Thread 1010 running
-INFO:root:[12:46:55]:  Thread 1011 running
-INFO:root:[12:46:55]:  Thread 1011 done running [1509]
-INFO:root:[12:46:55]:  Thread 1100 running
-INFO:root:[12:46:55]:  Thread 1100 done running [6367]
-INFO:root:[12:46:55]:  Thread 1010 done running [1509, 6367]
-INFO:root:[12:46:55]:  Thread 1101 running
-INFO:root:[12:46:55]:  Thread 1110 running
-INFO:root:[12:46:55]:  Thread 1110 done running [7856]
-INFO:root:[12:46:55]:  Thread 1111 running
-INFO:root:[12:46:55]:  Thread 1111 done running [21362]
-INFO:root:[12:46:55]:  Thread 1101 done running [7856, 21362]
-INFO:root:[12:46:55]:  Thread 1001 done running [1509, 6367, 7856, 21362]
-INFO:root:[12:46:55]:  Thread 1 done running [1509, 3304, 6367, 7856, 8221, 14038, 21362, 26849]
+INFO:root:[12:57:09]:  Thread 1 running
+INFO:root:[12:57:09]:  Thread 10 running
+INFO:root:[12:57:09]:  Thread 11 running
+INFO:root:[12:57:09]:  Thread 100 running
+INFO:root:[12:57:09]:  Thread 101 running
+INFO:root:[12:57:09]:  Thread 110 running
+INFO:root:[12:57:09]:  Thread 111 running
+INFO:root:[12:57:09]:  Thread 111 done running [78592]
+INFO:root:[12:57:09]:  Thread 1000 running
+INFO:root:[12:57:09]:  Thread 1001 running
+INFO:root:[12:57:09]:  Thread 1001 done running [9374]
+INFO:root:[12:57:09]:  Thread 1010 running
+INFO:root:[12:57:09]:  Thread 1010 done running [10283]
+INFO:root:[12:57:09]:  Thread 1000 done running [9374, 10283]
+INFO:root:[12:57:09]:  Thread 110 done running [9374, 10283, 78592]
+INFO:root:[12:57:09]:  Thread 1011 running
+INFO:root:[12:57:09]:  Thread 1100 running
+INFO:root:[12:57:09]:  Thread 1100 done running [21458]
+INFO:root:[12:57:09]:  Thread 1101 running
+INFO:root:[12:57:09]:  Thread 1110 running
+INFO:root:[12:57:09]:  Thread 1110 done running [56742]
+INFO:root:[12:57:09]:  Thread 1111 running
+INFO:root:[12:57:09]:  Thread 1111 done running [567]
+INFO:root:[12:57:09]:  Thread 1101 done running [567, 56742]
+INFO:root:[12:57:09]:  Thread 1011 done running [567, 21458, 56742]
+INFO:root:[12:57:09]:  Thread 101 done running [567, 9374, 10283, 21458, 56742, 78592]
+INFO:root:[12:57:09]:  Thread 10000 running
+INFO:root:[12:57:09]:  Thread 10001 running
+INFO:root:[12:57:09]:  Thread 10010 running
+INFO:root:[12:57:09]:  Thread 10010 done running [12983]
+INFO:root:[12:57:09]:  Thread 10011 running
+INFO:root:[12:57:09]:  Thread 10100 running
+INFO:root:[12:57:09]:  Thread 10100 done running [98725]
+INFO:root:[12:57:09]:  Thread 10101 running
+INFO:root:[12:57:09]:  Thread 10101 done running [29178]
+INFO:root:[12:57:09]:  Thread 10011 done running [29178, 98725]
+INFO:root:[12:57:09]:  Thread 10001 done running [12983, 29178, 98725]
+INFO:root:[12:57:09]:  Thread 10110 running
+INFO:root:[12:57:09]:  Thread 10111 running
+INFO:root:[12:57:09]:  Thread 10111 done running [814]
+INFO:root:[12:57:09]:  Thread 11000 running
+INFO:root:[12:57:09]:  Thread 11001 running
+INFO:root:[12:57:09]:  Thread 11001 done running [16738]
+INFO:root:[12:57:09]:  Thread 11010 running
+INFO:root:[12:57:09]:  Thread 11010 done running [21485]
+INFO:root:[12:57:09]:  Thread 11000 done running [16738, 21485]
+INFO:root:[12:57:09]:  Thread 10110 done running [814, 16738, 21485]
+INFO:root:[12:57:09]:  Thread 10000 done running [814, 12983, 16738, 21485, 29178, 98725]
+INFO:root:[12:57:09]:  Thread 100 done running [567, 814, 9374, 10283, 12983, 16738, 21458, 21485, 29178, 56742, 78592, 98725]
+INFO:root:[12:57:09]:  Thread 11011 running
+INFO:root:[12:57:09]:  Thread 11100 running
+INFO:root:[12:57:09]:  Thread 11101 running
+INFO:root:[12:57:09]:  Thread 11110 running
+INFO:root:[12:57:09]:  Thread 11110 done running [18592]
+INFO:root:[12:57:09]:  Thread 11111 running
+INFO:root:[12:57:09]:  Thread 100000 running
+INFO:root:[12:57:09]:  Thread 100000 done running [93721]
+INFO:root:[12:57:09]:  Thread 100001 running
+INFO:root:[12:57:09]:  Thread 100001 done running [30259]
+INFO:root:[12:57:09]:  Thread 11111 done running [30259, 93721]
+INFO:root:[12:57:09]:  Thread 11101 done running [18592, 30259, 93721]
+INFO:root:[12:57:09]:  Thread 100010 running
+INFO:root:[12:57:09]:  Thread 100011 running
+INFO:root:[12:57:09]:  Thread 100011 done running [32158]
+INFO:root:[12:57:09]:  Thread 100100 running
+INFO:root:[12:57:09]:  Thread 100101 running
+INFO:root:[12:57:09]:  Thread 100101 done running [14829]
+INFO:root:[12:57:09]:  Thread 100110 running
+INFO:root:[12:57:09]:  Thread 100110 done running [78592]
+INFO:root:[12:57:09]:  Thread 100100 done running [14829, 78592]
+INFO:root:[12:57:09]:  Thread 100010 done running [14829, 32158, 78592]
+INFO:root:[12:57:09]:  Thread 11100 done running [14829, 18592, 30259, 32158, 78592, 93721]
+INFO:root:[12:57:09]:  Thread 100111 running
+INFO:root:[12:57:09]:  Thread 101000 running
+INFO:root:[12:57:09]:  Thread 101001 running
+INFO:root:[12:57:09]:  Thread 101001 done running [15294]
+INFO:root:[12:57:09]:  Thread 101010 running
+INFO:root:[12:57:09]:  Thread 101011 running
+INFO:root:[12:57:09]:  Thread 101011 done running [12983]
+INFO:root:[12:57:09]:  Thread 101100 running
+INFO:root:[12:57:09]:  Thread 101100 done running [45639]
+INFO:root:[12:57:09]:  Thread 101010 done running [12983, 45639]
+INFO:root:[12:57:09]:  Thread 101000 done running [12983, 15294, 45639]
+INFO:root:[12:57:09]:  Thread 101101 running
+INFO:root:[12:57:09]:  Thread 101110 running
+INFO:root:[12:57:09]:  Thread 101111 running
+INFO:root:[12:57:09]:  Thread 101111 done running [98742]
+INFO:root:[12:57:09]:  Thread 110000 running
+INFO:root:[12:57:09]:  Thread 110000 done running [41237]
+INFO:root:[12:57:09]:  Thread 101110 done running [41237, 98742]
+INFO:root:[12:57:09]:  Thread 110001 running
+INFO:root:[12:57:09]:  Thread 110010 running
+INFO:root:[12:57:09]:  Thread 110010 done running [67359]
+INFO:root:[12:57:09]:  Thread 110011 running
+INFO:root:[12:57:09]:  Thread 110011 done running [678]
+INFO:root:[12:57:09]:  Thread 110001 done running [678, 67359]
+INFO:root:[12:57:09]:  Thread 101101 done running [678, 41237, 67359, 98742]
+INFO:root:[12:57:09]:  Thread 100111 done running [678, 12983, 15294, 41237, 45639, 67359, 98742]
+INFO:root:[12:57:09]:  Thread 11011 done running [678, 12983, 14829, 15294, 18592, 30259, 32158, 41237, 45639, 67359, 78592, 93721, 98742]
+INFO:root:[12:57:09]:  Thread 11 done running [567, 678, 814, 9374, 10283, 12983, 12983, 14829, 15294, 16738, 18592, 21458, 21485, 29178, 30259, 32158, 41237, 45639, 56742, 67359, 78592, 78592, 93721, 98725, 98742]
+INFO:root:[12:57:09]:  Thread 110100 running
+INFO:root:[12:57:09]:  Thread 110101 running
+INFO:root:[12:57:09]:  Thread 110110 running
+INFO:root:[12:57:09]:  Thread 110111 running
+INFO:root:[12:57:09]:  Thread 111000 running
+INFO:root:[12:57:09]:  Thread 111000 done running [17495]
+INFO:root:[12:57:09]:  Thread 111001 running
+INFO:root:[12:57:09]:  Thread 111010 running
+INFO:root:[12:57:09]:  Thread 111010 done running [69285]
+INFO:root:[12:57:09]:  Thread 111011 running
+INFO:root:[12:57:09]:  Thread 111011 done running [32145]
+INFO:root:[12:57:09]:  Thread 111001 done running [32145, 69285]
+INFO:root:[12:57:09]:  Thread 110111 done running [17495, 32145, 69285]
+INFO:root:[12:57:09]:  Thread 111100 running
+INFO:root:[12:57:09]:  Thread 111101 running
+INFO:root:[12:57:09]:  Thread 111101 done running [67893]
+INFO:root:[12:57:09]:  Thread 111110 running
+INFO:root:[12:57:09]:  Thread 111111 running
+INFO:root:[12:57:09]:  Thread 111111 done running [11947]
+INFO:root:[12:57:09]:  Thread 1000000 running
+INFO:root:[12:57:09]:  Thread 1000000 done running [12047]
+INFO:root:[12:57:09]:  Thread 111110 done running [11947, 12047]
+INFO:root:[12:57:09]:  Thread 111100 done running [11947, 12047, 67893]
+INFO:root:[12:57:09]:  Thread 110110 done running [11947, 12047, 17495, 32145, 67893, 69285]
+INFO:root:[12:57:09]:  Thread 1000001 running
+INFO:root:[12:57:09]:  Thread 1000010 running
+INFO:root:[12:57:09]:  Thread 1000011 running
+INFO:root:[12:57:09]:  Thread 1000011 done running [96231]
+INFO:root:[12:57:09]:  Thread 1000100 running
+INFO:root:[12:57:09]:  Thread 1000101 running
+INFO:root:[12:57:09]:  Thread 1000101 done running [35681]
+INFO:root:[12:57:09]:  Thread 1000110 running
+INFO:root:[12:57:09]:  Thread 1000110 done running [2047]
+INFO:root:[12:57:09]:  Thread 1000100 done running [2047, 35681]
+INFO:root:[12:57:09]:  Thread 1000010 done running [2047, 35681, 96231]
+INFO:root:[12:57:09]:  Thread 1000111 running
+INFO:root:[12:57:09]:  Thread 1001000 running
+INFO:root:[12:57:09]:  Thread 1001000 done running [30564]
+INFO:root:[12:57:09]:  Thread 1001001 running
+INFO:root:[12:57:09]:  Thread 1001010 running
+INFO:root:[12:57:09]:  Thread 1001010 done running [50928]
+INFO:root:[12:57:09]:  Thread 1001011 running
+INFO:root:[12:57:09]:  Thread 1001011 done running [10294]
+INFO:root:[12:57:09]:  Thread 1001001 done running [10294, 50928]
+INFO:root:[12:57:09]:  Thread 1000111 done running [10294, 30564, 50928]
+INFO:root:[12:57:09]:  Thread 1000001 done running [2047, 10294, 30564, 35681, 50928, 96231]
+INFO:root:[12:57:09]:  Thread 110101 done running [2047, 10294, 11947, 12047, 17495, 30564, 32145, 35681, 50928, 67893, 69285, 96231]
+INFO:root:[12:57:09]:  Thread 1001100 running
+INFO:root:[12:57:09]:  Thread 1001101 running
+INFO:root:[12:57:09]:  Thread 1001110 running
+INFO:root:[12:57:09]:  Thread 1001111 running
+INFO:root:[12:57:09]:  Thread 1001111 done running [93720]
+INFO:root:[12:57:09]:  Thread 1010000 running
+INFO:root:[12:57:09]:  Thread 1010001 running
+INFO:root:[12:57:09]:  Thread 1010001 done running [573]
+INFO:root:[12:57:09]:  Thread 1010010 running
+INFO:root:[12:57:09]:  Thread 1010010 done running [67802]
+INFO:root:[12:57:09]:  Thread 1010000 done running [573, 67802]
+INFO:root:[12:57:09]:  Thread 1001110 done running [573, 67802, 93720]
+INFO:root:[12:57:09]:  Thread 1010011 running
+INFO:root:[12:57:09]:  Thread 1010100 running
+INFO:root:[12:57:09]:  Thread 1010100 done running [65814]
+INFO:root:[12:57:09]:  Thread 1010101 running
+INFO:root:[12:57:09]:  Thread 1010110 running
+INFO:root:[12:57:09]:  Thread 1010110 done running [29378]
+INFO:root:[12:57:09]:  Thread 1010111 running
+INFO:root:[12:57:09]:  Thread 1010111 done running [891]
+INFO:root:[12:57:09]:  Thread 1010101 done running [891, 29378]
+INFO:root:[12:57:09]:  Thread 1010011 done running [891, 29378, 65814]
+INFO:root:[12:57:09]:  Thread 1001101 done running [573, 891, 29378, 65814, 67802, 93720]
+INFO:root:[12:57:09]:  Thread 1011000 running
+INFO:root:[12:57:09]:  Thread 1011001 running
+INFO:root:[12:57:09]:  Thread 1011010 running
+INFO:root:[12:57:09]:  Thread 1011010 done running [9374]
+INFO:root:[12:57:09]:  Thread 1011011 running
+INFO:root:[12:57:09]:  Thread 1011100 running
+INFO:root:[12:57:09]:  Thread 1011100 done running [12847]
+INFO:root:[12:57:09]:  Thread 1011101 running
+INFO:root:[12:57:09]:  Thread 1011101 done running [30518]
+INFO:root:[12:57:09]:  Thread 1011011 done running [12847, 30518]
+INFO:root:[12:57:09]:  Thread 1011001 done running [9374, 12847, 30518]
+INFO:root:[12:57:09]:  Thread 1011110 running
+INFO:root:[12:57:09]:  Thread 1011111 running
+INFO:root:[12:57:09]:  Thread 1100000 running
+INFO:root:[12:57:09]:  Thread 1100000 done running [47963]
+INFO:root:[12:57:09]:  Thread 1100001 running
+INFO:root:[12:57:09]:  Thread 1100001 done running [45671]
+INFO:root:[12:57:09]:  Thread 1011111 done running [45671, 47963]
+INFO:root:[12:57:09]:  Thread 1100010 running
+INFO:root:[12:57:09]:  Thread 1100011 running
+INFO:root:[12:57:09]:  Thread 1100011 done running [78942]
+INFO:root:[12:57:09]:  Thread 1100100 running
+INFO:root:[12:57:09]:  Thread 1100100 done running [15283]
+INFO:root:[12:57:09]:  Thread 1100010 done running [15283, 78942]
+INFO:root:[12:57:09]:  Thread 1011110 done running [15283, 45671, 47963, 78942]
+INFO:root:[12:57:09]:  Thread 1011000 done running [9374, 12847, 15283, 30518, 45671, 47963, 78942]
+INFO:root:[12:57:09]:  Thread 1001100 done running [573, 891, 9374, 12847, 15283, 29378, 30518, 45671, 47963, 65814, 67802, 78942, 93720]
+INFO:root:[12:57:09]:  Thread 110100 done running [573, 891, 2047, 9374, 10294, 11947, 12047, 12847, 15283, 17495, 29378, 30518, 30564, 32145, 35681, 45671, 47963, 50928, 65814, 67802, 67893, 69285, 78942, 93720, 96231]
+INFO:root:[12:57:09]:  Thread 10 done running [567, 573, 678, 814, 891, 2047, 9374, 9374, 10283, 10294, 11947, 12047, 12847, 12983, 12983, 14829, 15283, 15294, 16738, 17495, 18592, 21458, 21485, 29178, 29378, 30259, 30518, 30564, 32145, 32158, 35681, 41237, 45639, 45671, 47963, 50928, 56742, 65814, 67359, 67802, 67893, 69285, 78592, 78592, 78942, 93720, 93721, 96231, 98725, 98742]
+INFO:root:[12:57:09]:  Thread 1100101 running
+INFO:root:[12:57:09]:  Thread 1100110 running
+INFO:root:[12:57:09]:  Thread 1100111 running
+INFO:root:[12:57:09]:  Thread 1101000 running
+INFO:root:[12:57:09]:  Thread 1101001 running
+INFO:root:[12:57:09]:  Thread 1101010 running
+INFO:root:[12:57:09]:  Thread 1101010 done running [6948]
+INFO:root:[12:57:09]:  Thread 1101011 running
+INFO:root:[12:57:09]:  Thread 1101100 running
+INFO:root:[12:57:09]:  Thread 1101100 done running [29871]
+INFO:root:[12:57:09]:  Thread 1101101 running
+INFO:root:[12:57:09]:  Thread 1101101 done running [67820]
+INFO:root:[12:57:09]:  Thread 1101011 done running [29871, 67820]
+INFO:root:[12:57:09]:  Thread 1101001 done running [6948, 29871, 67820]
+INFO:root:[12:57:09]:  Thread 1101110 running
+INFO:root:[12:57:09]:  Thread 1101111 running
+INFO:root:[12:57:09]:  Thread 1101111 done running [21458]
+INFO:root:[12:57:09]:  Thread 1110000 running
+INFO:root:[12:57:09]:  Thread 1110001 running
+INFO:root:[12:57:09]:  Thread 1110001 done running [67893]
+INFO:root:[12:57:09]:  Thread 1110010 running
+INFO:root:[12:57:09]:  Thread 1110010 done running [67854]
+INFO:root:[12:57:09]:  Thread 1110000 done running [67854, 67893]
+INFO:root:[12:57:09]:  Thread 1101110 done running [21458, 67854, 67893]
+INFO:root:[12:57:09]:  Thread 1101000 done running [6948, 21458, 29871, 67820, 67854, 67893]
+INFO:root:[12:57:09]:  Thread 1110011 running
+INFO:root:[12:57:09]:  Thread 1110100 running
+INFO:root:[12:57:09]:  Thread 1110101 running
+INFO:root:[12:57:09]:  Thread 1110101 done running [745]
+INFO:root:[12:57:09]:  Thread 1110110 running
+INFO:root:[12:57:09]:  Thread 1110111 running
+INFO:root:[12:57:09]:  Thread 1110111 done running [12983]
+INFO:root:[12:57:09]:  Thread 1111000 running
+INFO:root:[12:57:09]:  Thread 1111000 done running [46739]
+INFO:root:[12:57:09]:  Thread 1110110 done running [12983, 46739]
+INFO:root:[12:57:09]:  Thread 1110100 done running [745, 12983, 46739]
+INFO:root:[12:57:09]:  Thread 1111001 running
+INFO:root:[12:57:09]:  Thread 1111010 running
+INFO:root:[12:57:09]:  Thread 1111010 done running [78942]
+INFO:root:[12:57:09]:  Thread 1111011 running
+INFO:root:[12:57:09]:  Thread 1111100 running
+INFO:root:[12:57:09]:  Thread 1111100 done running [47926]
+INFO:root:[12:57:09]:  Thread 1111101 running
+INFO:root:[12:57:09]:  Thread 1111101 done running [3561]
+INFO:root:[12:57:09]:  Thread 1111011 done running [3561, 47926]
+INFO:root:[12:57:09]:  Thread 1111001 done running [3561, 47926, 78942]
+INFO:root:[12:57:09]:  Thread 1110011 done running [745, 3561, 12983, 46739, 47926, 78942]
+INFO:root:[12:57:09]:  Thread 1100111 done running [745, 3561, 6948, 12983, 21458, 29871, 46739, 47926, 67820, 67854, 67893, 78942]
+INFO:root:[12:57:09]:  Thread 1111110 running
+INFO:root:[12:57:09]:  Thread 1111111 running
+INFO:root:[12:57:09]:  Thread 10000000 running
+INFO:root:[12:57:09]:  Thread 10000001 running
+INFO:root:[12:57:09]:  Thread 10000001 done running [67854]
+INFO:root:[12:57:09]:  Thread 10000010 running
+INFO:root:[12:57:09]:  Thread 10000011 running
+INFO:root:[12:57:09]:  Thread 10000011 done running [25647]
+INFO:root:[12:57:09]:  Thread 10000100 running
+INFO:root:[12:57:09]:  Thread 10000100 done running [74269]
+INFO:root:[12:57:09]:  Thread 10000010 done running [25647, 74269]
+INFO:root:[12:57:09]:  Thread 10000000 done running [25647, 67854, 74269]
+INFO:root:[12:57:09]:  Thread 10000101 running
+INFO:root:[12:57:09]:  Thread 10000110 running
+INFO:root:[12:57:09]:  Thread 10000110 done running [356]
+INFO:root:[12:57:09]:  Thread 10000111 running
+INFO:root:[12:57:09]:  Thread 10001000 running
+INFO:root:[12:57:09]:  Thread 10001000 done running [6948]
+INFO:root:[12:57:09]:  Thread 10001001 running
+INFO:root:[12:57:09]:  Thread 10001001 done running [68492]
+INFO:root:[12:57:09]:  Thread 10000111 done running [6948, 68492]
+INFO:root:[12:57:09]:  Thread 10000101 done running [356, 6948, 68492]
+INFO:root:[12:57:09]:  Thread 1111111 done running [356, 6948, 25647, 67854, 68492, 74269]
+INFO:root:[12:57:09]:  Thread 10001010 running
+INFO:root:[12:57:09]:  Thread 10001011 running
+INFO:root:[12:57:09]:  Thread 10001100 running
+INFO:root:[12:57:09]:  Thread 10001100 done running [75869]
+INFO:root:[12:57:09]:  Thread 10001101 running
+INFO:root:[12:57:09]:  Thread 10001110 running
+INFO:root:[12:57:09]:  Thread 10001110 done running [56742]
+INFO:root:[12:57:09]:  Thread 10001111 running
+INFO:root:[12:57:09]:  Thread 10001111 done running [10293]
+INFO:root:[12:57:09]:  Thread 10001101 done running [10293, 56742]
+INFO:root:[12:57:09]:  Thread 10001011 done running [10293, 56742, 75869]
+INFO:root:[12:57:09]:  Thread 10010000 running
+INFO:root:[12:57:09]:  Thread 10010001 running
+INFO:root:[12:57:09]:  Thread 10010010 running
+INFO:root:[12:57:09]:  Thread 10010010 done running [18592]
+INFO:root:[12:57:09]:  Thread 10010011 running
+INFO:root:[12:57:09]:  Thread 10010011 done running [67893]
+INFO:root:[12:57:09]:  Thread 10010001 done running [18592, 67893]
+INFO:root:[12:57:09]:  Thread 10010100 running
+INFO:root:[12:57:09]:  Thread 10010101 running
+INFO:root:[12:57:09]:  Thread 10010101 done running [11947]
+INFO:root:[12:57:09]:  Thread 10010110 running
+INFO:root:[12:57:09]:  Thread 10010110 done running [4782]
+INFO:root:[12:57:09]:  Thread 10010100 done running [4782, 11947]
+INFO:root:[12:57:09]:  Thread 10010000 done running [4782, 11947, 18592, 67893]
+INFO:root:[12:57:09]:  Thread 10001010 done running [4782, 10293, 11947, 18592, 56742, 67893, 75869]
+INFO:root:[12:57:09]:  Thread 1111110 done running [356, 4782, 6948, 10293, 11947, 18592, 25647, 56742, 67854, 67893, 68492, 74269, 75869]
+INFO:root:[12:57:09]:  Thread 1100110 done running [356, 745, 3561, 4782, 6948, 6948, 10293, 11947, 12983, 18592, 21458, 25647, 29871, 46739, 47926, 56742, 67820, 67854, 67854, 67893, 67893, 68492, 74269, 75869, 78942]
+INFO:root:[12:57:09]:  Thread 10010111 running
+INFO:root:[12:57:09]:  Thread 10011000 running
+INFO:root:[12:57:09]:  Thread 10011001 running
+INFO:root:[12:57:09]:  Thread 10011010 running
+INFO:root:[12:57:09]:  Thread 10011011 running
+INFO:root:[12:57:09]:  Thread 10011011 done running [94567]
+INFO:root:[12:57:09]:  Thread 10011100 running
+INFO:root:[12:57:09]:  Thread 10011101 running
+INFO:root:[12:57:09]:  Thread 10011101 done running [21485]
+INFO:root:[12:57:09]:  Thread 10011110 running
+INFO:root:[12:57:09]:  Thread 10011110 done running [67820]
+INFO:root:[12:57:09]:  Thread 10011100 done running [21485, 67820]
+INFO:root:[12:57:09]:  Thread 10011010 done running [21485, 67820, 94567]
+INFO:root:[12:57:09]:  Thread 10011111 running
+INFO:root:[12:57:09]:  Thread 10100000 running
+INFO:root:[12:57:09]:  Thread 10100000 done running [21458]
+INFO:root:[12:57:09]:  Thread 10100001 running
+INFO:root:[12:57:09]:  Thread 10100010 running
+INFO:root:[12:57:09]:  Thread 10100010 done running [67854]
+INFO:root:[12:57:09]:  Thread 10100011 running
+INFO:root:[12:57:09]:  Thread 10100011 done running [32158]
+INFO:root:[12:57:09]:  Thread 10100001 done running [32158, 67854]
+INFO:root:[12:57:09]:  Thread 10011111 done running [21458, 32158, 67854]
+INFO:root:[12:57:09]:  Thread 10011001 done running [21458, 21485, 32158, 67820, 67854, 94567]
+INFO:root:[12:57:09]:  Thread 10100100 running
+INFO:root:[12:57:09]:  Thread 10100101 running
+INFO:root:[12:57:09]:  Thread 10100110 running
+INFO:root:[12:57:09]:  Thread 10100110 done running [84732]
+INFO:root:[12:57:09]:  Thread 10100111 running
+INFO:root:[12:57:09]:  Thread 10101000 running
+INFO:root:[12:57:09]:  Thread 10101000 done running [67854]
+INFO:root:[12:57:09]:  Thread 10101001 running
+INFO:root:[12:57:09]:  Thread 10101001 done running [93721]
+INFO:root:[12:57:09]:  Thread 10100111 done running [67854, 93721]
+INFO:root:[12:57:09]:  Thread 10100101 done running [67854, 84732, 93721]
+INFO:root:[12:57:09]:  Thread 10101010 running
+INFO:root:[12:57:09]:  Thread 10101011 running
+INFO:root:[12:57:09]:  Thread 10101011 done running [9374]
+INFO:root:[12:57:09]:  Thread 10101100 running
+INFO:root:[12:57:09]:  Thread 10101101 running
+INFO:root:[12:57:09]:  Thread 10101101 done running [93287]
+INFO:root:[12:57:09]:  Thread 10101110 running
+INFO:root:[12:57:09]:  Thread 10101110 done running [29378]
+INFO:root:[12:57:09]:  Thread 10101100 done running [29378, 93287]
+INFO:root:[12:57:09]:  Thread 10101010 done running [9374, 29378, 93287]
+INFO:root:[12:57:09]:  Thread 10100100 done running [9374, 29378, 67854, 84732, 93287, 93721]
+INFO:root:[12:57:09]:  Thread 10011000 done running [9374, 21458, 21485, 29378, 32158, 67820, 67854, 67854, 84732, 93287, 93721, 94567]
+INFO:root:[12:57:09]:  Thread 10101111 running
+INFO:root:[12:57:09]:  Thread 10110000 running
+INFO:root:[12:57:09]:  Thread 10110001 running
+INFO:root:[12:57:09]:  Thread 10110010 running
+INFO:root:[12:57:09]:  Thread 10110010 done running [69285]
+INFO:root:[12:57:09]:  Thread 10110011 running
+INFO:root:[12:57:09]:  Thread 10110100 running
+INFO:root:[12:57:09]:  Thread 10110100 done running [891]
+INFO:root:[12:57:09]:  Thread 10110101 running
+INFO:root:[12:57:09]:  Thread 10110101 done running [50984]
+INFO:root:[12:57:09]:  Thread 10110011 done running [891, 50984]
+INFO:root:[12:57:09]:  Thread 10110001 done running [891, 50984, 69285]
+INFO:root:[12:57:09]:  Thread 10110110 running
+INFO:root:[12:57:09]:  Thread 10110111 running
+INFO:root:[12:57:09]:  Thread 10110111 done running [75896]
+INFO:root:[12:57:09]:  Thread 10111000 running
+INFO:root:[12:57:09]:  Thread 10111001 running
+INFO:root:[12:57:09]:  Thread 10111001 done running [95634]
+INFO:root:[12:57:09]:  Thread 10111010 running
+INFO:root:[12:57:09]:  Thread 10111010 done running [35681]
+INFO:root:[12:57:09]:  Thread 10111000 done running [35681, 95634]
+INFO:root:[12:57:09]:  Thread 10110110 done running [35681, 75896, 95634]
+INFO:root:[12:57:09]:  Thread 10110000 done running [891, 35681, 50984, 69285, 75896, 95634]
+INFO:root:[12:57:09]:  Thread 10111011 running
+INFO:root:[12:57:09]:  Thread 10111100 running
+INFO:root:[12:57:09]:  Thread 10111101 running
+INFO:root:[12:57:09]:  Thread 10111101 done running [98725]
+INFO:root:[12:57:09]:  Thread 10111110 running
+INFO:root:[12:57:09]:  Thread 10111111 running
+INFO:root:[12:57:09]:  Thread 10111111 done running [39451]
+INFO:root:[12:57:09]:  Thread 11000000 running
+INFO:root:[12:57:09]:  Thread 11000000 done running [41237]
+INFO:root:[12:57:09]:  Thread 10111110 done running [39451, 41237]
+INFO:root:[12:57:09]:  Thread 10111100 done running [39451, 41237, 98725]
+INFO:root:[12:57:09]:  Thread 11000001 running
+INFO:root:[12:57:09]:  Thread 11000010 running
+INFO:root:[12:57:09]:  Thread 11000011 running
+INFO:root:[12:57:09]:  Thread 11000011 done running [29871]
+INFO:root:[12:57:09]:  Thread 11000100 running
+INFO:root:[12:57:09]:  Thread 11000100 done running [15294]
+INFO:root:[12:57:09]:  Thread 11000010 done running [15294, 29871]
+INFO:root:[12:57:09]:  Thread 11000101 running
+INFO:root:[12:57:09]:  Thread 11000110 running
+INFO:root:[12:57:09]:  Thread 11000110 done running [68492]
+INFO:root:[12:57:09]:  Thread 11000111 running
+INFO:root:[12:57:09]:  Thread 11000111 done running [204]
+INFO:root:[12:57:09]:  Thread 11000101 done running [204, 68492]
+INFO:root:[12:57:09]:  Thread 11000001 done running [204, 15294, 29871, 68492]
+INFO:root:[12:57:09]:  Thread 10111011 done running [204, 15294, 29871, 39451, 41237, 68492, 98725]
+INFO:root:[12:57:09]:  Thread 10101111 done running [204, 891, 15294, 29871, 35681, 39451, 41237, 50984, 68492, 69285, 75896, 95634, 98725]
+INFO:root:[12:57:09]:  Thread 10010111 done running [204, 891, 9374, 15294, 21458, 21485, 29378, 29871, 32158, 35681, 39451, 41237, 50984, 67820, 67854, 67854, 68492, 69285, 75896, 84732, 93287, 93721, 94567, 95634, 98725]
+INFO:root:[12:57:09]:  Thread 1100101 done running [204, 356, 745, 891, 3561, 4782, 6948, 6948, 9374, 10293, 11947, 12983, 15294, 18592, 21458, 21458, 21485, 25647, 29378, 29871, 29871, 32158, 35681, 39451, 41237, 46739, 47926, 50984, 56742, 67820, 67820, 67854, 67854, 67854, 67854, 67893, 67893, 68492, 68492, 69285, 74269, 75869, 75896, 78942, 84732, 93287, 93721, 94567, 95634, 98725]
+INFO:root:[12:57:09]:  Thread 1 done running [204, 356, 567, 573, 678, 745, 814, 891, 891, 2047, 3561, 4782, 6948, 6948, 9374, 9374, 9374, 10283, 10293, 10294, 11947, 11947, 12047, 12847, 12983, 12983, 12983, 14829, 15283, 15294, 15294, 16738, 17495, 18592, 18592, 21458, 21458, 21458, 21485, 21485, 25647, 29178, 29378, 29378, 29871, 29871, 30259, 30518, 30564, 32145, 32158, 32158, 35681, 35681, 39451, 41237, 41237, 45639, 45671, 46739, 47926, 47963, 50928, 50984, 56742, 56742, 65814, 67359, 67802, 67820, 67820, 67854, 67854, 67854, 67854, 67893, 67893, 67893, 68492, 68492, 69285, 69285, 74269, 75869, 75896, 78592, 78592, 78942, 78942, 84732, 93287, 93720, 93721, 93721, 94567, 95634, 96231, 98725, 98725, 98742]
