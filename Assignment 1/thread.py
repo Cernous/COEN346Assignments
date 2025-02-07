@@ -2,13 +2,20 @@ import threading
 from threading import Event
 import time
 import datetime as dt
+import logging
+
+logging.basicConfig(
+  filename="Assignment 1/output.txt",
+  level=logging.INFO
+)
+
+logger = logging.getLogger()
 
 class Thread(threading.Thread):
   """
   This is a custom Thread class that uses
   - Stop events to completely stop a thread
   - Loops a function given a poll time
-
 
   """
   def __init__(self, name: str, command, **kwargs) -> None:
@@ -30,6 +37,7 @@ class Thread(threading.Thread):
         Overwrites the Thread.run function with the function that needs to be ran
     '''
     print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running")
+    logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running"]))
     self.stop_event.clear()
     out = None
     while True:
@@ -39,6 +47,7 @@ class Thread(threading.Thread):
         except Exception as e:
           # made to prevent deadlocks ("release an unlocked lock (mutex)")
           print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, str(e))
+          logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, str(e)]))
         # SLEEP NO RUN
         time.sleep(self.poll_time)
       else:
@@ -51,6 +60,7 @@ class Thread(threading.Thread):
         # so that the thread can join without stalling
         break
     print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} done running", out)
+    logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} done running", str(out)]))
     return out
 
   def stop(self):
