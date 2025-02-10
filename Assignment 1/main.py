@@ -83,8 +83,8 @@ if __name__ == "__main__":
     input_contents = [checkNumFormat(cont)(cont) for cont in input_contents]
     threadpool.append(Thread(f"Thread {toBinary(1)}", partial(mergeSort,input_contents, threadpool)))
     print(threadpool[0].run())
-    try:
-        for t in threadpool:
-            t.join()
-    except Exception as e:
-        print(e)
+    # try:
+    #     for t in threadpool:
+    #         t.join()
+    # except Exception as e:
+    #     print(e)
