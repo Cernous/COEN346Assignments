@@ -17,57 +17,56 @@ class Thread(threading.Thread):
   This is a custom Thread class that uses
   - Stop events to completely stop a thread
   - Loops a function given a poll time
-
   """
-  def __init__(self, name: str, command, **kwargs) -> None:
+  def __init__(self, name: str, **kwargs) -> None:
     '''
         Creates a thread with the following parameters
             Parameters:
                 name (str): name of the thread
-                command (function): partial or full function 
-                kwargs["time"] (float) : by default 2 seconds unless specified (poll rate or function run rate)
+                kwargs["time"] (int) : by default 2 seconds unless specified (poll rate or function run rate)
     '''
     super().__init__()
-    self.poll_time = None if "time" not in kwargs else kwargs.pop("time")
+    self.time = 1000 if "time" not in kwargs else int(kwargs.pop("time"))
     self.stop_event = Event()
+    self.started = False
     self.name = name
-    self.partial_command = command
+
+  def start(self):
+    if not self.started:
+      print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started")
+      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started"]))
+      self.stop_event.clear()
+      self.started = True
+      return super().start()
+    else:
+      print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running")
+      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running"]))
+      self.stop_event.clear()
 
   def run(self):
     '''
         Overwrites the Thread.run function with the function that needs to be ran
     '''
-    print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started")
-    logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started"]))
-    self.stop_event.clear()
-    while True:
-      print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running")
-      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running"]))
-      out = None
-      if self.poll_time is not None and (type(self.poll_time) is float or type(self.poll_time) is int):   
-        try:
-          out = self.partial_command()
-        except Exception as e:
-          # made to prevent deadlocks ("release an unlocked lock (mutex)")
-          print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, str(e))
-          logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, str(e)]))
-      # SLEEP NO RUN
-        print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing")
-        logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing"]))
-        time.sleep(self.poll_time)
-      else:
-        # if no looping is required then just execute the command once 
-        self.partial_command()
-        self.stop_event.set()
-
-      if self.stop_event.is_set():
-        # if a stop event is set then finish the execution of the partial command and break from the loop 
-        # so that the thread can join without stalling
-        break
-    print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} done running", out)
-    logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} done running", str(out)]))
-    return out
+    if self.started:
+      while self.time > 0:
+        if not self.stop_event.is_set():
+          # Do Tasks stuff
+          self.time -= 1
+          # out = partial
+        time.sleep(1)
+      print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
+      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
+      self.started = False
+      # return out
 
   def join(self, timeout: float = 2) -> None:
-    print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} joining main thread")
     super().join(timeout)
+
+  def stop(self):
+    if self.started:
+      print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing")
+      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing"]))
+      self.stop_event.set()
+
+  def status(self):
+    return not self.stop_event.is_set(), (self.time>0)
