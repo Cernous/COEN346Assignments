@@ -5,7 +5,7 @@ import datetime as dt
 import logging
 
 logging.basicConfig(
-  filename="Assignment 1/output.txt",
+  filename="Assignment 2/output.txt",
   level=logging.INFO,
   filemode='w'
 )
