@@ -1,6 +1,24 @@
 import time, math
 from thread import Thread
 
+def readInputFile(f_path:str):
+    f = open(f_path, 'r')
+    contents = [s.strip() for s in f.read().splitlines()]
+    time_quanta = int(contents[0])
+    contents.pop(0)
+    users = [(l[0], contents.index(l)) for l in contents if l[0].isalpha()]
+    processes = []
+    for u in users:
+        number = int(contents[u[1]][-1])
+        index = u[1]
+        for i in range(1,1+number):
+            split_contents = contents[u[1]+i]
+            arrival_time = int(split_contents[0])
+            service_time = int(split_contents[-1])
+            processes.append((u[0], i, arrival_time, service_time))
+    
+    return processes, time_quanta
+
 class Process:
     def __init__(self, arrival_Time: int, service_Time: int, user:str, p_Num: int):
         self.arrival_Time = arrival_Time
@@ -26,13 +44,12 @@ class Process:
 
 
 if __name__ == "__main__":
+    Processes, timequant = readInputFile("Assignment 2/input.txt")
     ProcessPool = [
         # Sort Processes before creating them...
-        Process(1,10,"User A", 1),
-        Process(5,12,"User A", 2)
+        Process(arrival_Time=p[2], service_Time=p[3], user=f"User {p[0]}", p_Num=p[1]) for p in Processes
     ]
     timeLine = 0
-    timequant = 4           # Not implemented
     scheduler = True
     while scheduler:
         process_timing = [p.arrival_Time for p in ProcessPool]
@@ -50,7 +67,3 @@ if __name__ == "__main__":
         ProcessPool = [p for p in ProcessPool if p.status() != "Finished"]
         time.sleep(1)
         timeLine+=1
-        
-
-
-    
