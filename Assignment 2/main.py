@@ -16,7 +16,8 @@ def readInputFile(f_path:str):
             arrival_time = int(split_contents[0])
             service_time = int(split_contents[-1])
             processes.append((u[0], i, arrival_time, service_time))
-    
+            
+    processes.sort(key=lambda x: x[2])
     return processes, time_quanta
 
 class Process:
@@ -41,10 +42,44 @@ class Process:
             self.__status = "Finished"
         
         return self.__status
+class Scheduler:
+    def __init__(self, time_quantum, processes):
+        self.time_quantum = time_quantum
+        self.processes = processes
 
+    def schedule(self):
+        timeLine = 0
+        while any(p.status() != "Finished" for p in self.processes):
+            # Get ready processes
+            ready_processes = [p for p in self.processes if p.arrival_Time <= timeLine and p.status() != "Finished"]
+            
+            # Group processes by user
+            user_processes = {}
+            for p in ready_processes:
+                user = p.name.split(", ")[0]
+                if user not in user_processes:
+                    user_processes[user] = []
+                user_processes[user].append(p)
+            
+            # Distribute time quantum among users
+            time_per_user = self.time_quantum / len(user_processes) if user_processes else 0
+            
+            # Run processes for their allocated time
+            for user, user_procs in user_processes.items():
+                time_per_process = time_per_user / len(user_procs)
+                for p in user_procs:
+                    if p.status() != "Running":
+                        p.start()
+                    time.sleep(time_per_process)  
+                    if p.status() != "Finished":
+                        p.stop()
+            
+            # Update timeline
+            timeLine += self.time_quantum
 
 if __name__ == "__main__":
     Processes, timequant = readInputFile("Assignment 2/input.txt")
+    Processes.sort(key=lambda x: x[2])
     ProcessPool = [
         # Sort Processes before creating them...
         Process(arrival_Time=p[2], service_Time=p[3], user=f"User {p[0]}", p_Num=p[1]) for p in Processes
