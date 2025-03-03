@@ -1,0 +1,2 @@
+INFO:root:[20:09:57]:  User A, Process 2 started
+INFO:root:[20:10:02]:  User A, Process 2 finished
