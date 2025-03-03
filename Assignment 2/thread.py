@@ -43,39 +43,24 @@ class Thread(threading.Thread):
       logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running"]))
       self.stop_event.clear()
 
-  # def run(self):
-  #   '''
-  #       Overwrites the Thread.run function with the function that needs to be ran
-  #   '''
-  #   if self.started:
-  #     while self.time > 0:
-  #       if not self.stop_event.is_set():
-  #         # Do Tasks stuff
-  #         if self.time == 1:
-  #           print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
-  #           logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
-  #         self.time -= 1
-  #         # out = partial
-  #       time.sleep(1)
-        
-  #     # print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
-  #     # logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
-  #     self.started = False
-  #     # return out
-
   def run(self):
+    '''
+        Overwrites the Thread.run function with the function that needs to be ran
+    '''
     if self.started:
-        while self.time > 0:
-            if not self.stop_event.is_set():
-                # Do Tasks stuff
-                if self.time == 1:
-                    print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
-                    logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
-                self.time -= 1
-            time.sleep(1)
+      while self.time > 0:
+        if not self.stop_event.is_set():
+          # Do Tasks stuff
+          if self.time == 1:
+            print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
+            logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
+          self.time -= 1
+          # out = partial
+        time.sleep(1)
+      self.started = False
 
-        # Reset the started flag when the thread finishes
-        self.started = False
+
+
 
   def join(self, timeout: float = 2) -> None:
     super().join(timeout)

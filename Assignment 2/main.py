@@ -55,64 +55,77 @@ if __name__ == "__main__":
     scheduler = True
 
     timeperuser = timequant
-    processblock = []
-    processtimings = {}
+    processblock = [] #List that will be updated at the beginning of every cycle which keeps track of all the available processes to schedule at the start of that cycle.
+    processtimings = {} #Dictionary with a process key and list value, which keeps track of all the processes to schedule at the start of a cycle. The list corresponds to the start and end time of each process in that cycle [start, end].
 
+
+    #Variables to keep track of the start and end time of each cycle
     cyclestart = timeLine
     cycleend = timeLine+timequant
 
     while scheduler:
-        ProcessPool = [p for p in ProcessPool if p.status() != "Finished"]
+        ProcessPool = [p for p in ProcessPool if p.status() != "Finished"] #Ready queue
         scheduler = len(ProcessPool)!=0
         process_check = [True if p.status() == "Running" else False for p in ProcessPool]
 
+
+        #Stops current running process when time allotted is over if the next cycle has not arrived yet
         for process in processtimings:
-            if timeLine > 2 and timeLine == processtimings[process][1]:
+            if timeLine > 2 and timeLine == processtimings[process][1] and process.status() == "Running":
                 process.stop()
-        if len(ProcessPool) == 0:
+        if len(ProcessPool) == 0: #Exits scheduler if there are no more processes in the processpool
             break
 
+        #This code block will run once at the beginning of every time quantum cycle.
         if timeLine == cycleend or cyclestart == 0:
             for p in ProcessPool:
                
                 if p.status() == "Running":
                     p.stop()
             
+            #Updates start and end time of cycles
             cyclestart = timeLine
             cycleend = cyclestart + timequant
 
-            print("Start: " + str(cyclestart))
-
+            #Removes finished processes from process block
             for p in processblock:
                 if p.status() == "Finished":
                     processblock.remove(p)
 
+            #Updates process block to add all processes which can be run in the given cycle.
             for p, index in zip(ProcessPool, range(len(ProcessPool))):
                 if p.arrival_Time <= timeLine and p.status() not in ["Running", "Finished"]:
                     if p not in processblock:
                         processblock.append(p)
 
+            #Intermediate dictionary to track how many processes there are for each user
+            #key = user, value = no. of processes for that user
             processesperuser = {}
 
+            #Adds all users who have processes available in the cycle to the intermediate dictionary
             for p in processblock:
                 if p.user not in processesperuser:
                     processesperuser[p.user] = 0
 
-            
-
+            #Counts the amount of processes each user has.
             for process in processblock:
                 for user in processesperuser:
                     if process.user == user:
                         processesperuser[user] += 1
 
+            #Intermediate dictionary to track how much time is allowed for each process to run for in the given cycle.
+            #key = process, value = time allowed for that process
             processtimeallotted = {}
 
+            #Calculates how much time is allowed for each process to run in a given cycle.
             for process in processblock:
                 timeallotted = timequant/(len(processesperuser)*processesperuser[process.user])
                 processtimeallotted[process] = timeallotted
 
+            #Reinitializes processtimings to empty dictionary.
             processtimings = {}
 
+            #Calculates the exact start and end time on the timeline for each process that is available to run in the cycle, and stores them in a list as a value with the process as the key in the processtimings dictionary.
             timestart = cyclestart
             timefinish = cyclestart
             for process in processtimeallotted:
@@ -120,24 +133,10 @@ if __name__ == "__main__":
                 processtimings[process] = [timestart,timefinish]
                 timestart = timefinish
 
-            # for key in processtimings:
-            #     print(key.name, processtimings[key])
-
+        #Iterates over each process in processtimings dictionary, and starts them when the timeline reaches their starting time.
         for process in processtimings:
             if timeLine == processtimings[process][0]:
                 process.start()
-            
 
-        # for process in processblock:
-        #     print(str(timeLine) + " " + process.name + " " + process.status())
-        # for process in processtimings:
-        #     print(processtimings[process])
-        
- 
-        
-        
         time.sleep(1)
         timeLine+=1
-        # print(timeLine)
-    time.sleep(1)
-    timeLine +=1
