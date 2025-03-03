@@ -56,26 +56,36 @@ if __name__ == "__main__":
 
     timeperuser = timequant
     processblock = []
+    processtimings = {}
 
     cyclestart = timeLine
     cycleend = timeLine+timequant
 
     while scheduler:
+        ProcessPool = [p for p in ProcessPool if p.status() != "Finished"]
         scheduler = len(ProcessPool)!=0
         process_check = [True if p.status() == "Running" else False for p in ProcessPool]
 
-        
+        for process in processtimings:
+            if timeLine > 2 and timeLine == processtimings[process][1]:
+                process.stop()
+        if len(ProcessPool) == 0:
+            break
 
         if timeLine == cycleend or cyclestart == 0:
+            for p in ProcessPool:
+               
+                if p.status() == "Running":
+                    p.stop()
             
-            if cyclestart != 0:
-                for process in processblock:
-                    if process.status() == "Running":
-                        process.stop()
             cyclestart = timeLine
             cycleend = cyclestart + timequant
 
             print("Start: " + str(cyclestart))
+
+            for p in processblock:
+                if p.status() == "Finished":
+                    processblock.remove(p)
 
             for p, index in zip(ProcessPool, range(len(ProcessPool))):
                 if p.arrival_Time <= timeLine and p.status() not in ["Running", "Finished"]:
@@ -88,9 +98,7 @@ if __name__ == "__main__":
                 if p.user not in processesperuser:
                     processesperuser[p.user] = 0
 
-            for p in processblock:
-                if p.status() == "Finished":
-                    processblock.remove(p)
+            
 
             for process in processblock:
                 for user in processesperuser:
@@ -112,34 +120,24 @@ if __name__ == "__main__":
                 processtimings[process] = [timestart,timefinish]
                 timestart = timefinish
 
-        if timeLine <= 1:
-            for process in processtimings:
-                if timeLine == processtimings[process][0]:
-                    process.start()
-                elif timeLine == processtimings[process][1]:
-                    process.stop()
+            # for key in processtimings:
+            #     print(key.name, processtimings[key])
 
-        
-        for process in processblock:
-            print(str(timeLine) + " " + process.name + " " + process.status())
         for process in processtimings:
-            print(processtimings[process])
-        # for key in processtimings:
-        #     print(key, processtimings[key])
-        # print(len(processblock))
+            if timeLine == processtimings[process][0]:
+                process.start()
+            
 
-        # for p, index in zip(ProcessPool, range(len(ProcessPool))):
-        #     if p.arrival_Time <= timeLine and p.status() not in ["Running", "Finished"]:
-        #         if any(process_check):
-        #             id = process_check.index(True)
-        #             ProcessPool[id].stop()
-        #         p.start()
-        #         running_process = p
-        #         running_start_time = timeLine
-        #         break
+        # for process in processblock:
+        #     print(str(timeLine) + " " + process.name + " " + process.status())
+        # for process in processtimings:
+        #     print(processtimings[process])
         
-
+ 
         
-        ProcessPool = [p for p in ProcessPool if p.status() != "Finished"]
+        
         time.sleep(1)
         timeLine+=1
+        # print(timeLine)
+    time.sleep(1)
+    timeLine +=1

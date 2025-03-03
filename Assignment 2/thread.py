@@ -26,7 +26,7 @@ class Thread(threading.Thread):
                 kwargs["time"] (int) : by default 2 seconds unless specified (poll rate or function run rate)
     '''
     super().__init__()
-    self.time = 1000 if "time" not in kwargs else int(kwargs.pop("time"))
+    self.time = 1000 if "time" not in kwargs else int(kwargs.pop("time"))+1
     self.stop_event = Event()
     self.started = False
     self.name = name
@@ -43,21 +43,39 @@ class Thread(threading.Thread):
       logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running"]))
       self.stop_event.clear()
 
+  # def run(self):
+  #   '''
+  #       Overwrites the Thread.run function with the function that needs to be ran
+  #   '''
+  #   if self.started:
+  #     while self.time > 0:
+  #       if not self.stop_event.is_set():
+  #         # Do Tasks stuff
+  #         if self.time == 1:
+  #           print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
+  #           logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
+  #         self.time -= 1
+  #         # out = partial
+  #       time.sleep(1)
+        
+  #     # print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
+  #     # logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
+  #     self.started = False
+  #     # return out
+
   def run(self):
-    '''
-        Overwrites the Thread.run function with the function that needs to be ran
-    '''
     if self.started:
-      while self.time >= 0:
-        if not self.stop_event.is_set():
-          # Do Tasks stuff
-          self.time -= 1
-          # out = partial
-        time.sleep(1)
-      print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
-      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
-      self.started = False
-      # return out
+        while self.time > 0:
+            if not self.stop_event.is_set():
+                # Do Tasks stuff
+                if self.time == 1:
+                    print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
+                    logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
+                self.time -= 1
+            time.sleep(1)
+
+        # Reset the started flag when the thread finishes
+        self.started = False
 
   def join(self, timeout: float = 2) -> None:
     super().join(timeout)
