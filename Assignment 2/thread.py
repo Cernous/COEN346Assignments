@@ -32,7 +32,7 @@ class Thread(threading.Thread):
     self.name = name
 
   def start(self):
-    if not self.started:
+    if not self.started and self.time != 0:
       print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started")
       logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started"]))
       self.stop_event.clear()
@@ -43,27 +43,10 @@ class Thread(threading.Thread):
       logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running"]))
       self.stop_event.clear()
 
-  # def run(self):
-  #   '''
-  #       Overwrites the Thread.run function with the function that needs to be ran
-  #   '''
-  #   if self.started:
-  #     while self.time > 0:
-  #       if not self.stop_event.is_set():
-  #         # Do Tasks stuff
-  #         if self.time == 1:
-  #           print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
-  #           logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
-  #         self.time -= 1
-  #         # out = partial
-  #       time.sleep(1)
-        
-  #     # print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
-  #     # logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
-  #     self.started = False
-  #     # return out
-
   def run(self):
+    '''
+        Overwrites the Thread.run function with the function that needs to be ran
+    '''
     if self.started:
         while self.time > 0:
             if not self.stop_event.is_set():
@@ -81,7 +64,7 @@ class Thread(threading.Thread):
     super().join(timeout)
 
   def stop(self):
-    if self.started:
+    if self.started and self.time > 0:
       print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing")
       logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing"]))
       self.stop_event.set()
