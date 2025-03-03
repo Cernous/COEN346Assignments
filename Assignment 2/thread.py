@@ -48,7 +48,7 @@ class Thread(threading.Thread):
         Overwrites the Thread.run function with the function that needs to be ran
     '''
     if self.started:
-      while self.time > 0:
+      while self.time >= 0:
         if not self.stop_event.is_set():
           # Do Tasks stuff
           self.time -= 1
