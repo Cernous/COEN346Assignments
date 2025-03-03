@@ -52,19 +52,18 @@ class Thread(threading.Thread):
             if not self.stop_event.is_set():
                 # Do Tasks stuff
                 if self.time == 1:
+                    # Reset the started flag when the thread finishes
+                    self.started = False
                     print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
                     logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
                 self.time -= 1
             time.sleep(1)
 
-        # Reset the started flag when the thread finishes
-        self.started = False
-
   def join(self, timeout: float = 2) -> None:
     super().join(timeout)
 
   def stop(self):
-    if self.started and self.time > 0:
+    if self.started and self.time != 0:
       print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing")
       logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing"]))
       self.stop_event.set()
