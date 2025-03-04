@@ -33,13 +33,13 @@ class Thread(threading.Thread):
 
   def start(self):
     if not self.started and self.time != 0:
-      print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started")
+      #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started")
       logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started"]))
       self.stop_event.clear()
       self.started = True
       return super().start()
     else:
-      print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running")
+      #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running")
       logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running"]))
       self.stop_event.clear()
 
@@ -54,17 +54,17 @@ class Thread(threading.Thread):
                 if self.time == 1:
                     # Reset the started flag when the thread finishes
                     self.started = False
-                    print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
+                    #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
                     logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
                 self.time -= 1
-            time.sleep(1)
+            time.sleep(1)   
 
   def join(self, timeout: float = 2) -> None:
     super().join(timeout)
 
   def stop(self):
-    if self.started and self.time != 0:
-      print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing")
+    if self.started and self.time > 0:
+      #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing")
       logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing"]))
       self.stop_event.set()
 
