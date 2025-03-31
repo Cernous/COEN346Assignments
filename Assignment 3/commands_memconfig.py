@@ -19,4 +19,4 @@ def readMemConfigFile(memconfig_path:str):
 
     return int(memconfig[0])
 
-print(readMemConfigFile("Assignment 3/memconfig.txt"))
+# print(readMemConfigFile("Assignment 3/memconfig.txt"))
