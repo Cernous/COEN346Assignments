@@ -1,5 +1,6 @@
 import time, math
 from thread import Thread
+from commands_memconfig import *
 
 def readInputFile(f_path:str):
     """
@@ -48,27 +49,32 @@ class Process:
             self.__status = "Finished"
         
         return self.__status
+    
+    def assign(command:list):
+        pass
 
 
 if __name__ == "__main__":
     Processes, cores = readInputFile("Assignment 3/processes.txt")
+    commands = readCommandsFile("Assignment 3/commands.txt")
+    memconfig = readMemConfigFile("Assignment 3/memconfig.txt")
     timeLine = 0        # Simulated TimeLine
     scheduler = True    # Active Scheduler
     readyQ = []         # Ready Queue
-    CPU:Process = [None] * cores  # Current Process on the CPU if CPU is none, that means there is nothing running otherwise it is a Process
+    CPU:list[Process] = [None] * cores  # Current Process on the CPU if CPU is none, that means there is nothing running otherwise it is a Process
     deadLine = [0] * cores        # CPU's deadline to be compared with the timeline
     while scheduler:
         """
         There is no wrong way of programming this but only one way to achieve the near same results as the what we have in the assignment
         As long as the Processes havent been processed by the CPU or the ready queue is still not empty the scheduler will remain running
         """
-        scheduler = len(Processes) != 0 or len(readyQ) != 0 or None not in CPU
+        scheduler = len(Processes) != 0 or len(readyQ) != 0 or not all([p == None for p in CPU])
         remove_indices = []
         # Creates the process depending on its arrival time
         for process in Processes:
-            if process[2]*1000 == timeLine:
+            if process[1]*1000 == timeLine:
                 # Arrival Time ding ding
-                current = Process(process[1]*1000, process[2]*1000, process[10])
+                current = Process(process[1]*1000, process[2]*1000, process[0])
                 remove_indices.append(Processes.index(process))
                 print(f"Time {timeLine}, {current.name}, {current.status()}")
                 readyQ.append(current) # Makes it available for the CPU whenever it is the first element
@@ -78,20 +84,22 @@ if __name__ == "__main__":
         for i in remove_indices:
             Processes.pop(i)
 
-        if None not in CPU:
+        if any([isinstance(p, Process) for p in CPU]):
             # If a process is currently on the CPU
-            if any([d <= timeLine for d in deadLine]):
+            if any([d <= timeLine and d != 0 for d in deadLine]):
                 # CPU Deadline ding ding
-                index = CPU.index(None)
+                index = [d <= timeLine for d in deadLine].index(True)
                 CPU[index].stop()
-                print(f"Time {timeLine}, {CPU[index].name}, {CPU[index].status()}")
-                if CPU.service_Time > 0:
+                print(f"Time {timeLine}, {CPU[index].name}, CPU {index}, {CPU[index].status()}")
+                if CPU[index].service_Time > 0:
+                    # Not being used since - Assignment 2
                     # Put back at the end of the ready queue if necessary
-                    readyQ.append(CPU)
+                    readyQ.append(CPU[index])
                 else:
-                    # Makes sures that the time allocation remains dynamic on the number of present processes
+                    # No more dynamic time allocation per user process
                     pass
-                CPU = None
+                CPU[index] = None
+                deadLine[index] = 0
         
         """
         Putting the resume here helps with immediately assigning something instead of waiting another second
@@ -101,8 +109,11 @@ if __name__ == "__main__":
             index = CPU.index(None)
             CPU[index] = readyQ.pop(0)
             CPU[index].start()
-            print(f"Time {timeLine}, {CPU[index].name}, {CPU[index].status()}")
+            print(f"Time {timeLine}, {CPU[index].name}, CPU {index}, {CPU[index].status()}")
             deadLine[index] = CPU[index].arrival_Time + CPU[index].service_Time
+            CPU[index].service_Time = 0 # prevents the readdition of the process unto the ReadyQ
         
         time.sleep(0.001)
         timeLine += 1
+
+    print("Scheduler Done!")
