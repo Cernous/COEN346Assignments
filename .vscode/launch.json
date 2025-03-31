@@ -8,7 +8,7 @@
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",
-            "program": "Assignment 2/main.py",
+            "program": "Assignment 3/main.py",
             "console": "integratedTerminal"
         }
     ]
