@@ -20,6 +20,8 @@ def readInputFile(f_path:str):
     
     return processes, core
 
+
+
 class Process:
     """
     Process Class contains specific parameters and properties that control the status of a 'process'
