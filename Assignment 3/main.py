@@ -58,7 +58,8 @@ if __name__ == "__main__":
     Processes, cores = readInputFile("Assignment 3/processes.txt")
     commands = readCommandsFile("Assignment 3/commands.txt")
     memconfig = readMemConfigFile("Assignment 3/memconfig.txt")
-    timeLine = 0        # Simulated TimeLine
+    initial_Processes = list(Processes)
+    timeLine = 0        # Simulated TimeLine (Might be changed for time.time() timestamps for full process synchronization later)
     scheduler = True    # Active Scheduler
     readyQ = []         # Ready Queue
     CPU:list[Process] = [None] * cores  # Current Process on the CPU if CPU is none, that means there is nothing running otherwise it is a Process
@@ -76,7 +77,7 @@ if __name__ == "__main__":
                 # Arrival Time ding ding
                 current = Process(process[1]*1000, process[2]*1000, process[0])
                 remove_indices.append(Processes.index(process))
-                print(f"Time {timeLine}, {current.name}, {current.status()}")
+                print(f"Time {timeLine}, {current.name}, {current.status()} and Appended to the Ready Queue")
                 readyQ.append(current) # Makes it available for the CPU whenever it is the first element
 
         # Pop elements of the processes list as they are created
@@ -84,6 +85,9 @@ if __name__ == "__main__":
         for i in remove_indices:
             Processes.pop(i)
 
+        """
+        Process termination for deadline met or overdue
+        """
         if any([isinstance(p, Process) for p in CPU]):
             # If a process is currently on the CPU
             if any([d <= timeLine and d != 0 for d in deadLine]):
@@ -98,8 +102,26 @@ if __name__ == "__main__":
                 else:
                     # No more dynamic time allocation per user process
                     pass
+
+                # Destroy processes when done
                 CPU[index] = None
                 deadLine[index] = 0
+
+                # # Loop mechanism - Assignment 3
+                # if all([p == None for p in CPU]) and len(Processes) == 0:
+                #     Processes = list(initial_Processes)
+                #     Processes = [(p[0], p[1] + timeLine/1000, p[2]) for p in Processes]
+
+            """
+            Command Assignment of the Processes
+            """
+            # Precision is not really of concern if we are counting per milliseconds
+            # Need to see what is A running but idle process
+            for p in CPU:
+                if isinstance(p, Process):
+                    if p.status() == "Idling":
+                        p.assign(commands.pop(0))
+                
         
         """
         Putting the resume here helps with immediately assigning something instead of waiting another second
