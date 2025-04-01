@@ -32,10 +32,12 @@ class Thread(threading.Thread):
         Creates a thread with the following parameters
             Parameters:
                 name (str): name of the thread
-                kwargs["time"] (int) : by default 2 seconds unless specified (poll rate or function run rate)
+                kwargs["time"] (int) : by default 1000 milliseconds but otherwise needs to be in milliseconds
     '''
     super().__init__()
+    self.created_Time = round(time.time() * 1000) # precisely when this thread is created in milliseconds
     self.time = 1000 if "time" not in kwargs else int(kwargs.pop("time"))+1
+    self.dead_Line = self.created_Time + self.time # soft deadline in milliseconds
     self.stop_event = Event()
     self.started = False
     self.name = name
@@ -43,13 +45,13 @@ class Thread(threading.Thread):
   def start(self):
     if not self.started and self.time != 0:
       #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started")
-      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started"]))
+      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started", f"Service Time Left: {self.time}"]))
       self.stop_event.clear()
       self.started = True
       return super().start()
     else:
       #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running")
-      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running"]))
+      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running", f"Service Time Left: {self.time}"]))
       self.stop_event.clear()
 
   def run(self):
@@ -64,8 +66,11 @@ class Thread(threading.Thread):
                     # Reset the started flag when the thread finishes
                     self.started = False
                     #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
-                    logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished"]))
-                self.time -= 1
+                    logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished", f"Service Time Left: {self.time}"]))
+                self.time = self.dead_Line - round(time.time()*1000)
+            else:
+                # freeze count down
+                self.dead_Line = self.time + round(time.time()*1000)
             time.sleep(0.001)   
 
   def join(self, timeout: float = 2) -> None:
@@ -74,7 +79,7 @@ class Thread(threading.Thread):
   def stop(self):
     if self.started and self.time > 0:
       #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing")
-      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing"]))
+      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing", f"Service Time Left: {self.time}"]))
       self.stop_event.set()
 
   def status(self):
