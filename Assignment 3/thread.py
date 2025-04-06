@@ -12,6 +12,7 @@ logging.basicConfig(
 
 logger = logging.getLogger()
 
+
 """
 Instructions for Threads:
 - run() always loops and checks if there is a command assigned to it
