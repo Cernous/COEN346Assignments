@@ -78,6 +78,7 @@ if __name__ == "__main__":
     commands = readCommandsFile("Assignment 3/commands.txt")
     memconfig = readMemConfigFile("Assignment 3/memconfig.txt")
     initial_Processes = list(Processes)
+    initial_Commands = list(commands)
     start = round(time.time() * 1000) if not DEBUG else 0
     Memory_Object = Memory_Disk(memconfig, start)
     
@@ -139,12 +140,12 @@ if __name__ == "__main__":
             """
             # Precision is not really of concern if we are counting per milliseconds
             # Need to see what is A running but idle process
-            for p in CPU:
+            for p,i in zip(CPU, range(cores)):
                 if isinstance(p, Process):
-                    if p.status() == "Idling":
+                    if p.status() == "Idling" and len(commands) != 0:
                         c = commands.pop(0)
                         p.assign(c)
-                        print(f"Time {timeLine}, {CPU[index].name}, CPU {index}, {CPU[index].status()} {c}")
+                        print(f"Time {timeLine}, {p.name}, CPU {i}, {p.status()} {c}")
                 
         
         """
@@ -163,3 +164,5 @@ if __name__ == "__main__":
         timeLine = (round(time.time() * 1000) - start) if not DEBUG else timeLine + 1
 
     print("Scheduler Done!")
+    Memory_Object.printmem()
+    Memory_Object.printdisk()
