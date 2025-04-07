@@ -79,7 +79,7 @@ if __name__ == "__main__":
     memconfig = readMemConfigFile("Assignment 3/memconfig.txt")
     initial_Processes = list(Processes)
     initial_Commands = list(commands)
-    start = round(time.time() * 1000) if not DEBUG else 0
+    start = round(time.time() * 1000)
     Memory_Object = Memory_Disk(memconfig, start)
     
     timeLine = 0        # True TimeLine (changed for time.time() timestamps for full process synchronization later)

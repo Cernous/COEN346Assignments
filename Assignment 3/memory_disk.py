@@ -1,6 +1,14 @@
 import time, math
 from thread import Thread
+import datetime as dt
+import logging
 from multiprocessing import Semaphore, Lock
+
+logging.basicConfig(
+    filename="Assignment 3/output.txt", level=logging.INFO, filemode="w"
+)
+
+logger = logging.getLogger()
 
 RELEASEMODE: bool = False
 
@@ -32,7 +40,7 @@ class Memory_Disk:
         self.start = starttime
 
     def updateTime(self): #Updates the current time within the class
-        self.time = time.time() - self.start
+        self.time = round(time.time()*1000) - self.start
 
     def updateLastAccess(self, value): #Updates the last accessed time in an id, value pair.
         value[2] = self.time
@@ -203,10 +211,19 @@ class Memory_Disk:
                 else: #If there is not free space in the memory
 
                     #Swaps the least recently accessed id in memory with the given id and updates last accesed time
+
                     leastrecent = self.releasehelper(self.leastRecent())
                     self.storehelper(self.disk[diskindex][0], self.disk[diskindex][1])
                     self.disk[diskindex][2] = self.time #update time
                     output = self.disk[diskindex][1]
+                    logger.info(
+                        " ".join(
+                            [
+                                f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
+                                f"Memory Disk Manager Swap: ID {self.disk[diskindex][0]} with ID {leastrecent[0]}",
+                            ]
+                        )
+                    )
                     del self.disk[diskindex]
                     self.disk.append(leastrecent)
 
