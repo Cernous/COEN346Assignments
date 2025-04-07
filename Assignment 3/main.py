@@ -67,7 +67,7 @@ class Process:
                 partial_Obj = partial(self.mem_Object.release, id=command[1])
         
         if partial_Obj is not None and self.__status == "Idling":
-            self.__Thread.assign(partial_Obj)
+            self.__Thread.assign(partial_Obj, command)
 
 """
 Scheduler - Yes in Main
