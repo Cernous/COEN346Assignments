@@ -45,7 +45,6 @@ class Thread(threading.Thread):
         self.stop_event = Event()
         self.started = False
         self.assignment = None
-        self.timesleep = 0
         self.name = name
 
     def start(self):
@@ -55,7 +54,7 @@ class Thread(threading.Thread):
                 " ".join(
                     [
                         f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
-                        f"{self.name} started",
+                        f"{self.name} started |",
                         f"Service Time Left: {self.time}",
                     ]
                 )
@@ -69,19 +68,20 @@ class Thread(threading.Thread):
                 " ".join(
                     [
                         f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
-                        f"{self.name} running",
+                        f"{self.name} running |",
                         f"Service Time Left: {self.time}",
                     ]
                 )
             )
             self.stop_event.clear()
 
-    def assign(self, partial_function):
+    def assign(self, partial_function, command:list):
         """ 
         Assigns the process with a function
         """
         if isinstance(partial_function, partial):
             self.assignment = partial_function
+            self.assignment_comment = command
 
     def run(self):
         """
@@ -99,15 +99,33 @@ class Thread(threading.Thread):
                             " ".join(
                                 [
                                     f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
-                                    f"{self.name} finished",
+                                    f"{self.name} finished |",
                                     f"Service Time Left: {self.time}",
                                 ]
                             )
                         )
                     if self.assignment is not None:
-                        self.assignment()
-                        self.timesleep = (randint(100, 1000))
-                        time.sleep((self.timesleep if self.timesleep < self.time else self.time)/1000)
+                        logger.info(
+                            " ".join(
+                                [
+                                    f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
+                                    f"{self.name} started {' '.join(self.assignment_comment)} |",
+                                    f"Service Time Left: {self.time}",
+                                ]
+                            )
+                        )
+                        return_value = self.assignment()
+                        timesleep = (randint(100, 1000))
+                        time.sleep((timesleep if timesleep < self.time else self.time)/1000)
+                        logger.info(
+                            " ".join(
+                                [
+                                    f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
+                                    f"{self.name} finished {' '.join(self.assignment_comment)} value: {return_value} |",
+                                    f"Service Time Left: {self.time}",
+                                ]
+                            )
+                        )
                         self.assignment = None
 
                     self.time = self.dead_Line - round(time.time() * 1000)
@@ -127,7 +145,7 @@ class Thread(threading.Thread):
                     [
                         f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
                         self.name,
-                        "pausing",
+                        "stopping |",
                         f"Service Time Left: {self.time}",
                     ]
                 )
