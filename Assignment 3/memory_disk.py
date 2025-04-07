@@ -201,17 +201,17 @@ class Memory_Disk:
 """
 Test
 """
-        
-myobj = Memory_Disk(4,0)
+if __name__ == "__main__":        
+    myobj = Memory_Disk(2,0)
 
-myobj.store(1, 'value of 1')
-myobj.store(2, 'value of 2')
-myobj.store(3, 'value of 3')
-myobj.store(4, 'value of 4')
-myobj.store(5, 'value of 5')
-myobj.store(6, 'value of 6')
+    myobj.store(1, 'value of 1')
+    myobj.store(2, 'value of 2')
+    myobj.store(3, 'value of 3')
+    myobj.store(4, 'value of 4')
+    myobj.store(5, 'value of 5')
+    myobj.store(6, 'value of 6')
 
-myobj.lookup(5)
+    myobj.lookup(5)
 
-myobj.printmem()
-myobj.printdisk()
+    myobj.printmem()
+    myobj.printdisk()
