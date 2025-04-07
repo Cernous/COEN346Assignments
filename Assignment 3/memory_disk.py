@@ -1,5 +1,6 @@
 import time, math
 from thread import Thread
+from multiprocessing import Semaphore, Lock
 
 class Memory_Disk:
     """
@@ -14,12 +15,18 @@ class Memory_Disk:
     disk = []
     time = 0
 
+    #Semaphors
+    empty = Semaphore(memory_size)
+    full = Semaphore(0)
+    mutex = Lock()
+
     def __init__(self):
         pass
 
     def __init__(self, memsize, starttime):
         self.memory_size = memsize
         self.memory = [None]*memsize
+        self.empty = Semaphore(memsize)
         self.start = starttime
 
     def updateTime(self): #Updates the current time within the class
@@ -62,7 +69,7 @@ class Memory_Disk:
         
         return self.memory[min(accesstimes, key=accesstimes.get)][0]
 
-    def store(self, id, value): #Stores an id value pair as a  into the first unassigned spot in the memory. Returns True if a memory slot is open and False if there are no free memory slots.
+    def storehelper(self, id, value): #Stores an id value pair as a  into the first unassigned spot in the memory. Returns True if a memory slot is open and False if there are no free memory slots.
         self.updateTime()
 
         if self.memFreeSlots() > 0: #If memory is NOT full
@@ -72,11 +79,7 @@ class Memory_Disk:
                     break
             return True
         
-        else: #If memory IS full, store in disk
-            self.disk.append([id, value, self.time])
-            return False
-
-    def release(self, id): #Releases an id-value pair from the memory and returns the id, value list. Returns -1 if it does not exist.
+    def releasehelper(self, id): #Releases an id-value pair from the memory and returns the id, value list. Returns -1 if it does not exist.
         index = self.lookupMemory(id)
 
         if index != -1: #Check if the id currently exists in the memory
@@ -87,34 +90,128 @@ class Memory_Disk:
         else:
             return -1
 
-    def lookup(self, id):
+    """
+    APIs - These are the actual API methods that can be called by the processes.
+    """
+    def store(self, id, value): #Stores an id value pair as a  into the first unassigned spot in the memory. Returns True if a memory slot is open and False if there are no free memory slots.
+
+        self.mutex.acquire()
+        
         self.updateTime()
 
-        #Check if id is in the memory
-        memindex = self.lookupMemory(id)
-        if memindex != -1: #If the id is in the memory, update its last accessed time and returns the value associated to the id
-            self.memory[memindex][2] = self.time
-            return self.memory[memindex][1]
+        # Critical section
+        
+        if self.memFreeSlots() == 0: # If memory is FULL, store into disk
+            try:
+                self.disk.append([id, value, self.time])
+                output = False
+            finally:
+                self.mutex.release()
+        
+        else: # If memory is NOT FULL
+        
+            self.empty.acquire()
+            try:
+                for i in range(len(self.memory)):
+                    if self.memory[i] == None: #Store at the first available slot
+                        self.memory[i] = [id, value, self.time]
+                        break
+                output = True
+                
+            finally:
+                self.mutex.release()
+        return output
+
+    def release(self, id): #Releases an id-value pair from the memory and returns the id, value list. Returns -1 if it does not exist.
+        
+        self.mutex.acquire()
+        try:
+            index = self.lookupMemory(id)
+
+            if index != -1: #Check if the id currently exists in the memory
+                # self.updateLastAccess(self.memory[index])
+                idvalue = self.memory[index]
+                self.memory[index] = None
+
+                self.empty.release()
+                output = idvalue
+            else:
+                output -1
+        finally:
+            self.mutex.release()
+        
+        return output
+
+    def lookup(self, id):
+        self.mutex.acquire()
+        self.updateTime()
+        try:
+            #Check if id is in the memory
+            memindex = self.lookupMemory(id)
+            if memindex != -1: #If the id is in the memory, update its last accessed time and returns the value associated to the id
+                self.memory[memindex][2] = self.time
+                output = self.memory[memindex][1]
+                self.mutex.release()
+                
+            elif self.lookupDisk(id) != -1: #if id is in the disk, attempt to load the variable into memory
+                diskindex = self.lookupDisk(id)
+                if self.memFreeSlots() > 0: #If there is free space in the memory
+                    self.full.acquire()
+                    try:
+                        #Moves the id variable from the disk into the memory
+                        output = self.disk[diskindex][1]
+                        self.storehelper(self.disk[diskindex][0], self.disk[diskindex][1])
+                        del self.disk[diskindex]
+                    finally:
+                        self.empty.release()
+
+                else: #If there is not free space in the memory
+
+                    #Swaps the least recently accessed id in memory with the given id
+                    leastrecent = self.releasehelper(self.leastRecent())
+                    self.storehelper(self.disk[diskindex][0], self.disk[diskindex][1])
+                    output = self.disk[diskindex]
+                    del self.disk[diskindex]
+                    self.disk.append(leastrecent)
+
+            else: output = -1
+        
+        finally:
+            self.mutex.release()
+        return output
+    
+    def printmem(self):
+        toprint = "Memory Contents\n"
+        for i in range(len(self.memory)):
+            if self.memory[i] == None:
+                print("None")
+            else:
+                toprint += str(self.memory[i][0]) + " | " + self.memory[i][1] + " | " + str(self.memory[i][2]) + "\n"
+                
+        toprint += "\n"
+        print(toprint)
+    
+    def printdisk(self):
+        toprint = "Disk Contents\n"
+        for i in range(len(self.disk)):
+            toprint += str(self.disk[i][0]) + " | " + self.disk[i][1] + " | " + str(self.disk[i][2]) + "\n"
+        toprint += "\n"
+        print(toprint)
             
-        #Check if id is in the disk (ie. if page fault occurs)
-        diskindex = self.lookupDisk(id)
+"""
+Test
+"""
+        
+myobj = Memory_Disk(4,0)
 
-        if diskindex != -1: #if id is in the disk, attempt to load the variable into memory
-            if self.memFreeSlots() > 0: #If there is free space in the memory
+myobj.store(1, 'value of 1')
+myobj.store(2, 'value of 2')
+myobj.store(3, 'value of 3')
+myobj.store(4, 'value of 4')
+myobj.store(5, 'value of 5')
+myobj.store(6, 'value of 6')
 
-                #Moves the id variable from the disk into the memory
-                output = self.disk[diskindex][1]
-                self.store(self.disk[diskindex][0], self.disk[diskindex][1])
-                del self.disk[diskindex]
+myobj.lookup(5)
 
-            else: #If there is not free space in the memory
-
-                #Swaps the least recently accessed id in memory with the given id
-                leastrecent = self.release(self.leastRecent())
-                self.store(self.disk[diskindex][0], self.disk[diskindex][1])
-                output = self.disk[diskindex]
-                del self.disk[diskindex]
-                self.disk.append(leastrecent)
-            
-            return output
-        else: return -1
+myobj.printmem()
+myobj.printdisk()
