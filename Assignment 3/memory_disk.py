@@ -121,19 +121,55 @@ class Memory_Disk:
             finally:
                 self.mutex.release()
         return output
+    
+
+    """
+    This release() will release a variable from memory ONLY. If it's in the disk, it will return -1.
+    """
+
+    # def release(self, id): #Releases an id-value pair from the memory and returns the id, value list. Returns -1 if it does not exist.
+        
+    #     self.mutex.acquire()
+    #     try:
+    #         index = self.lookupMemory(id)
+
+    #         if index != -1: #Check if the id currently exists in the memory
+    #             # self.updateLastAccess(self.memory[index])
+    #             idvalue = self.memory[index]
+    #             self.memory[index] = None
+
+    #             self.empty.release()
+    #             output = idvalue
+    #         else:
+    #             output = -1
+    #     finally:
+    #         self.mutex.release()
+        
+    #     return output
+
+    
+    
+
+    """
+    This is the version of release() which will release a variable id from disk if it's not in memory.
+    """
 
     def release(self, id): #Releases an id-value pair from the memory and returns the id, value list. Returns -1 if it does not exist.
         
         self.mutex.acquire()
         try:
-            index = self.lookupMemory(id)
 
-            if index != -1: #Check if the id currently exists in the memory
-                # self.updateLastAccess(self.memory[index])
+            if self.lookupMemory(id) != -1: #Check if the id currently exists in the memory
+                index = self.lookupMemory(id)
                 idvalue = self.memory[index]
                 self.memory[index] = None
 
                 self.empty.release()
+                output = idvalue
+            elif self.lookupDisk(id) != -1: #Check if the id currently exists in the disk
+                index = self.lookupDisk(id)
+                idvalue = self.disk.pop(index)
+
                 output = idvalue
             else:
                 output = -1
@@ -157,7 +193,8 @@ class Memory_Disk:
                 if self.memFreeSlots() > 0: #If there is free space in the memory
                     self.full.acquire()
                     try:
-                        #Moves the id variable from the disk into the memory
+                        #Moves the id variable from the disk into the memory and updates its last accessed time
+                        self.disk[diskindex][2] = self.time #update last accessed time
                         output = self.disk[diskindex][1]
                         self.storehelper(self.disk[diskindex][0], self.disk[diskindex][1])
                         del self.disk[diskindex]
@@ -166,10 +203,11 @@ class Memory_Disk:
 
                 else: #If there is not free space in the memory
 
-                    #Swaps the least recently accessed id in memory with the given id
+                    #Swaps the least recently accessed id in memory with the given id and updates last accesed time
                     leastrecent = self.releasehelper(self.leastRecent())
                     self.storehelper(self.disk[diskindex][0], self.disk[diskindex][1])
-                    output = self.disk[diskindex]
+                    self.disk[diskindex][2] = self.time #update time
+                    output = self.disk[diskindex][1]
                     del self.disk[diskindex]
                     self.disk.append(leastrecent)
 
@@ -177,8 +215,7 @@ class Memory_Disk:
         
         finally:
             self.mutex.release()
-
-        return output
+            return output
     
     def printmem(self):
         toprint = "Memory Contents\n"
