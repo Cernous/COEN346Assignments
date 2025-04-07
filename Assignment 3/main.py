@@ -1,6 +1,8 @@
 import time, math
 from thread import Thread
+from functools import partial
 from commands_memconfig import *
+from memory_disk import *
 
 def readInputFile(f_path:str):
     """
@@ -29,9 +31,10 @@ class Process:
     Status's are dependent on the threads properties and NOT its own property for authenticity
     so even if the process is being juggled around, the status cannot be manipulated outside of its own class
     """
-    def __init__(self, arrival_Time: int, service_Time: int, p_Num: int):
+    def __init__(self, MemObj: Memory_Disk, arrival_Time: int, service_Time: int, p_Num: int):
         self.arrival_Time = arrival_Time
         self.service_Time = service_Time
+        self.mem_Object = MemObj
         self.name = f"Process {p_Num}"
         self.__Thread = Thread(self.name, time=self.service_Time)
         self.__status = "Created"
@@ -41,25 +44,44 @@ class Process:
         self.__Thread.start()
 
     def stop(self):
-        self.__status = "Paused"
+        self.__status = "Finished"
         self.__Thread.stop()
 
     def status(self):
-        if self.__Thread.status()[-1] == False:
+        temp = self.__Thread.status()
+        if temp[1] == False:
             self.__status = "Finished"
+        else:
+            self.__status = "Running" if temp[-1] else "Idling"
         
         return self.__status
     
-    def assign(command:list):
-        pass
+    def assign(self, command:list):
+        partial_Obj = None
+        match(command[0].lower()):
+            case "store":
+                partial_Obj = partial(self.mem_Object.store, id=command[1], value=command[2])
+            case "lookup":
+                partial_Obj = partial(self.mem_Object.lookup, id=command[1])
+            case "release":
+                partial_Obj = partial(self.mem_Object.release, id=command[1])
+        
+        if partial_Obj is not None and self.__status == "Idling":
+            self.__Thread.assign(partial_Obj)
 
-
+"""
+Scheduler - Yes in Main
+"""
+DEBUG = True
 if __name__ == "__main__":
     Processes, cores = readInputFile("Assignment 3/processes.txt")
     commands = readCommandsFile("Assignment 3/commands.txt")
     memconfig = readMemConfigFile("Assignment 3/memconfig.txt")
     initial_Processes = list(Processes)
-    timeLine = 0        # Simulated TimeLine (Might be changed for time.time() timestamps for full process synchronization later)
+    start = round(time.time() * 1000) if not DEBUG else 0
+    Memory_Object = Memory_Disk(memconfig, start)
+    
+    timeLine = 0        # True TimeLine (changed for time.time() timestamps for full process synchronization later)
     scheduler = True    # Active Scheduler
     readyQ = []         # Ready Queue
     CPU:list[Process] = [None] * cores  # Current Process on the CPU if CPU is none, that means there is nothing running otherwise it is a Process
@@ -75,7 +97,7 @@ if __name__ == "__main__":
         for process in Processes:
             if process[1]*1000 == timeLine:
                 # Arrival Time ding ding
-                current = Process(process[1]*1000, process[2]*1000, process[0])
+                current = Process(Memory_Object, process[1]*1000, process[2]*1000, process[0])
                 remove_indices.append(Processes.index(process))
                 print(f"Time {timeLine}, {current.name}, {current.status()} and Appended to the Ready Queue")
                 readyQ.append(current) # Makes it available for the CPU whenever it is the first element
@@ -120,7 +142,9 @@ if __name__ == "__main__":
             for p in CPU:
                 if isinstance(p, Process):
                     if p.status() == "Idling":
-                        p.assign(commands.pop(0))
+                        c = commands.pop(0)
+                        p.assign(c)
+                        print(f"Time {timeLine}, {CPU[index].name}, CPU {index}, {CPU[index].status()} {c}")
                 
         
         """
@@ -136,6 +160,6 @@ if __name__ == "__main__":
             CPU[index].service_Time = 0 # prevents the readdition of the process unto the ReadyQ
         
         time.sleep(0.001)
-        timeLine += 1
+        timeLine = (round(time.time() * 1000) - start) if not DEBUG else timeLine + 1
 
     print("Scheduler Done!")
