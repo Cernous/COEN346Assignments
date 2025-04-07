@@ -1,6 +1,7 @@
 import threading
 from threading import Event
 from functools import partial
+from random import randint
 import time
 import datetime as dt
 import logging
@@ -44,6 +45,7 @@ class Thread(threading.Thread):
         self.stop_event = Event()
         self.started = False
         self.assignment = None
+        self.timesleep = 0
         self.name = name
 
     def start(self):
@@ -74,6 +76,13 @@ class Thread(threading.Thread):
             )
             self.stop_event.clear()
 
+    def assign(self, partial_function):
+        """ 
+        Assigns the process with a function
+        """
+        if isinstance(partial_function, partial):
+            self.assignment = partial_function
+
     def run(self):
         """
         Overwrites the Thread.run function with the function that needs to be ran
@@ -95,6 +104,12 @@ class Thread(threading.Thread):
                                 ]
                             )
                         )
+                    if self.assignment is not None:
+                        self.assignment()
+                        self.timesleep = (randint(100, 1000))
+                        time.sleep((self.timesleep if self.timesleep < self.time else self.time)/1000)
+                        self.assignment = None
+
                     self.time = self.dead_Line - round(time.time() * 1000)
                 else:
                     # freeze count down
@@ -120,4 +135,4 @@ class Thread(threading.Thread):
             self.stop_event.set()
 
     def status(self):
-        return not self.stop_event.is_set(), (self.time > 0), self.assignment is not None
+        return not self.stop_event.is_set(), (self.time > 0), (self.assignment is not None)
