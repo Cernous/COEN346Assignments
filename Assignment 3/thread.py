@@ -1,17 +1,15 @@
 import threading
 from threading import Event
+from functools import partial
 import time
 import datetime as dt
 import logging
 
 logging.basicConfig(
-  filename="Assignment 3/output.txt",
-  level=logging.INFO,
-  filemode='w'
+    filename="Assignment 3/output.txt", level=logging.INFO, filemode="w"
 )
 
 logger = logging.getLogger()
-
 
 """
 Instructions for Threads:
@@ -22,66 +20,104 @@ Instructions for Threads:
 - Create any function that you want to be assigned a command keep in mind that this file will need imports from the memory/disk functions that Justin is doing
 """
 
+
 class Thread(threading.Thread):
-  """
-  This is a custom Thread class that uses
-  - Stop events to completely stop a thread
-  - Loops a function given a poll time
-  """
-  def __init__(self, name: str, **kwargs) -> None:
-    '''
+    """
+    This is a custom Thread class that uses
+    - Stop events to completely stop a thread
+    - Loops a function given a poll time
+    """
+
+    def __init__(self, name: str, **kwargs) -> None:
+        """
         Creates a thread with the following parameters
             Parameters:
                 name (str): name of the thread
                 kwargs["time"] (int) : by default 1000 milliseconds but otherwise needs to be in milliseconds
-    '''
-    super().__init__()
-    self.created_Time = round(time.time() * 1000) # precisely when this thread is created in milliseconds
-    self.time = 1000 if "time" not in kwargs else int(kwargs.pop("time"))+1
-    self.dead_Line = self.created_Time + self.time # soft deadline in milliseconds
-    self.stop_event = Event()
-    self.started = False
-    self.name = name
+        """
+        super().__init__()
+        self.created_Time = round(
+            time.time() * 1000
+        )  # precisely when this thread is created in milliseconds
+        self.time = 1000 if "time" not in kwargs else int(kwargs.pop("time")) + 1
+        self.dead_Line = self.created_Time + self.time  # soft deadline in milliseconds
+        self.stop_event = Event()
+        self.started = False
+        self.assignment = None
+        self.name = name
 
-  def start(self):
-    if not self.started and self.time != 0:
-      #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started")
-      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started", f"Service Time Left: {self.time}"]))
-      self.stop_event.clear()
-      self.started = True
-      return super().start()
-    else:
-      #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running")
-      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running", f"Service Time Left: {self.time}"]))
-      self.stop_event.clear()
+    def start(self):
+        if not self.started and self.time != 0:
+            # print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} started")
+            logger.info(
+                " ".join(
+                    [
+                        f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
+                        f"{self.name} started",
+                        f"Service Time Left: {self.time}",
+                    ]
+                )
+            )
+            self.stop_event.clear()
+            self.started = True
+            return super().start()
+        else:
+            # print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} running")
+            logger.info(
+                " ".join(
+                    [
+                        f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
+                        f"{self.name} running",
+                        f"Service Time Left: {self.time}",
+                    ]
+                )
+            )
+            self.stop_event.clear()
 
-  def run(self):
-    '''
+    def run(self):
+        """
         Overwrites the Thread.run function with the function that needs to be ran
-    '''
-    if self.started:
-        while self.time > 0:
-            if not self.stop_event.is_set():
-                # Do Tasks stuff
-                if self.time == 1:
-                    # Reset the started flag when the thread finishes
-                    self.started = False
-                    #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
-                    logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished", f"Service Time Left: {self.time}"]))
-                self.time = self.dead_Line - round(time.time()*1000)
-            else:
-                # freeze count down
-                self.dead_Line = self.time + round(time.time()*1000)
-            time.sleep(0.001)   
+        """
+        if self.started:
+            while self.time > 0:
+                if not self.stop_event.is_set():
+                    # Do Tasks stuff
+                    if self.time == 1:
+                        # Reset the started flag when the thread finishes
+                        self.started = False
+                        # print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
+                        logger.info(
+                            " ".join(
+                                [
+                                    f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
+                                    f"{self.name} finished",
+                                    f"Service Time Left: {self.time}",
+                                ]
+                            )
+                        )
+                    self.time = self.dead_Line - round(time.time() * 1000)
+                else:
+                    # freeze count down
+                    self.dead_Line = self.time + round(time.time() * 1000)
+                time.sleep(0.001)
 
-  def join(self, timeout: float = 2) -> None:
-    super().join(timeout)
+    def join(self, timeout: float = 2) -> None:
+        super().join(timeout)
 
-  def stop(self):
-    if self.started and self.time > 0:
-      #print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing")
-      logger.info(" ".join([f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing", f"Service Time Left: {self.time}"]))
-      self.stop_event.set()
+    def stop(self):
+        if self.started and self.time > 0:
+            # print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", self.name, "pausing")
+            logger.info(
+                " ".join(
+                    [
+                        f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
+                        self.name,
+                        "pausing",
+                        f"Service Time Left: {self.time}",
+                    ]
+                )
+            )
+            self.stop_event.set()
 
-  def status(self):
-    return not self.stop_event.is_set(), (self.time>0)
+    def status(self):
+        return not self.stop_event.is_set(), (self.time > 0), self.assignment is not None
