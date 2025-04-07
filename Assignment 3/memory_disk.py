@@ -1,6 +1,16 @@
 import time, math
 from thread import Thread
+import datetime as dt
+import logging
 from multiprocessing import Semaphore, Lock
+
+logging.basicConfig(
+    filename="Assignment 3/output.txt", level=logging.INFO, filemode="w"
+)
+
+logger = logging.getLogger()
+
+RELEASEMODE: bool = False
 
 class Memory_Disk:
     """
@@ -30,7 +40,7 @@ class Memory_Disk:
         self.start = starttime
 
     def updateTime(self): #Updates the current time within the class
-        self.time = time.time() - self.start
+        self.time = round(time.time()*1000) - self.start
 
     def updateLastAccess(self, value): #Updates the last accessed time in an id, value pair.
         value[2] = self.time
@@ -121,26 +131,59 @@ class Memory_Disk:
             finally:
                 self.mutex.release()
         return output
+    
+
+
 
     def release(self, id): #Releases an id-value pair from the memory and returns the id, value list. Returns -1 if it does not exist.
-        
-        self.mutex.acquire()
-        try:
-            index = self.lookupMemory(id)
+        if RELEASEMODE:
+                """
+                This release() will release a variable from memory ONLY. If it's in the disk, it will return -1.
+                """
+                self.mutex.acquire()
+                try:
+                    index = self.lookupMemory(id)
 
-            if index != -1: #Check if the id currently exists in the memory
-                # self.updateLastAccess(self.memory[index])
-                idvalue = self.memory[index]
-                self.memory[index] = None
+                    if index != -1: #Check if the id currently exists in the memory
+                        # self.updateLastAccess(self.memory[index])
+                        idvalue = self.memory[index]
+                        self.memory[index] = None
 
-                self.empty.release()
-                output = idvalue
-            else:
-                output -1
-        finally:
-            self.mutex.release()
+                        self.empty.release()
+                        output = idvalue
+                    else:
+                        output = -1
+                finally:
+                    self.mutex.release()
+            
+                return output
         
-        return output
+        else:
+            """
+            This is the version of release() which will release a variable id from disk if it's not in memory.
+            """
+            
+            self.mutex.acquire()
+            try:
+
+                if self.lookupMemory(id) != -1: #Check if the id currently exists in the memory
+                    index = self.lookupMemory(id)
+                    idvalue = self.memory[index]
+                    self.memory[index] = None
+
+                    self.empty.release()
+                    output = idvalue
+                elif self.lookupDisk(id) != -1: #Check if the id currently exists in the disk
+                    index = self.lookupDisk(id)
+                    idvalue = self.disk.pop(index)
+
+                    output = idvalue
+                else:
+                    output = -1
+            finally:
+                self.mutex.release()
+            
+            return output
 
     def lookup(self, id):
         self.mutex.acquire()
@@ -151,14 +194,14 @@ class Memory_Disk:
             if memindex != -1: #If the id is in the memory, update its last accessed time and returns the value associated to the id
                 self.memory[memindex][2] = self.time
                 output = self.memory[memindex][1]
-                self.mutex.release()
                 
             elif self.lookupDisk(id) != -1: #if id is in the disk, attempt to load the variable into memory
                 diskindex = self.lookupDisk(id)
                 if self.memFreeSlots() > 0: #If there is free space in the memory
                     self.full.acquire()
                     try:
-                        #Moves the id variable from the disk into the memory
+                        #Moves the id variable from the disk into the memory and updates its last accessed time
+                        self.disk[diskindex][2] = self.time #update last accessed time
                         output = self.disk[diskindex][1]
                         self.storehelper(self.disk[diskindex][0], self.disk[diskindex][1])
                         del self.disk[diskindex]
@@ -167,10 +210,20 @@ class Memory_Disk:
 
                 else: #If there is not free space in the memory
 
-                    #Swaps the least recently accessed id in memory with the given id
+                    #Swaps the least recently accessed id in memory with the given id and updates last accesed time
+
                     leastrecent = self.releasehelper(self.leastRecent())
                     self.storehelper(self.disk[diskindex][0], self.disk[diskindex][1])
-                    output = self.disk[diskindex]
+                    self.disk[diskindex][2] = self.time #update time
+                    output = self.disk[diskindex][1]
+                    logger.info(
+                        " ".join(
+                            [
+                                f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
+                                f"Memory Disk Manager Swap: ID {self.disk[diskindex][0]} with ID {leastrecent[0]}",
+                            ]
+                        )
+                    )
                     del self.disk[diskindex]
                     self.disk.append(leastrecent)
 
@@ -178,7 +231,7 @@ class Memory_Disk:
         
         finally:
             self.mutex.release()
-        return output
+            return output
     
     def printmem(self):
         toprint = "Memory Contents\n"
@@ -201,17 +254,17 @@ class Memory_Disk:
 """
 Test
 """
-        
-myobj = Memory_Disk(4,0)
+if __name__ == "__main__":        
+    myobj = Memory_Disk(2,0)
 
-myobj.store(1, 'value of 1')
-myobj.store(2, 'value of 2')
-myobj.store(3, 'value of 3')
-myobj.store(4, 'value of 4')
-myobj.store(5, 'value of 5')
-myobj.store(6, 'value of 6')
+    myobj.store(1, 'value of 1')
+    myobj.store(2, 'value of 2')
+    myobj.store(3, 'value of 3')
+    myobj.store(4, 'value of 4')
+    myobj.store(5, 'value of 5')
+    myobj.store(6, 'value of 6')
 
-myobj.lookup(5)
+    myobj.lookup(5)
 
-myobj.printmem()
-myobj.printdisk()
+    myobj.printmem()
+    myobj.printdisk()

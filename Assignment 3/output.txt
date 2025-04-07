@@ -1,0 +1,4 @@
+INFO:root:[22:38:35]:  Process 1 started Service Time Left: 2001
+INFO:root:[22:38:37]:  Process 0 started Service Time Left: 3001
+INFO:root:[22:38:40]:  Process 2 started Service Time Left: 3001
+INFO:root:[22:38:43]:  Process 2 finished Service Time Left: 1
