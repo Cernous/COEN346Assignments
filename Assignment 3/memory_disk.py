@@ -136,7 +136,7 @@ class Memory_Disk:
                 self.empty.release()
                 output = idvalue
             else:
-                output -1
+                output = -1
         finally:
             self.mutex.release()
         
@@ -151,7 +151,6 @@ class Memory_Disk:
             if memindex != -1: #If the id is in the memory, update its last accessed time and returns the value associated to the id
                 self.memory[memindex][2] = self.time
                 output = self.memory[memindex][1]
-                self.mutex.release()
                 
             elif self.lookupDisk(id) != -1: #if id is in the disk, attempt to load the variable into memory
                 diskindex = self.lookupDisk(id)
@@ -178,6 +177,7 @@ class Memory_Disk:
         
         finally:
             self.mutex.release()
+
         return output
     
     def printmem(self):
