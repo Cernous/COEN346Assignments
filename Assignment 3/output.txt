@@ -1,4 +1,27 @@
-INFO:root:[22:38:35]:  Process 1 started Service Time Left: 2001
-INFO:root:[22:38:37]:  Process 0 started Service Time Left: 3001
-INFO:root:[22:38:40]:  Process 2 started Service Time Left: 3001
-INFO:root:[22:38:43]:  Process 2 finished Service Time Left: 1
+INFO:root:[01:34:56]:  Process 1 started | Service Time Left: 2001
+INFO:root:[01:34:56]:  Process 1 started Store 1 5 | Service Time Left: 2000
+INFO:root:[01:34:56]:  Process 1 finished Store 1 5 value: True | Service Time Left: 2000
+INFO:root:[01:34:56]:  Process 1 started Store 2 3 | Service Time Left: 1583
+INFO:root:[01:34:56]:  Process 1 finished Store 2 3 value: True | Service Time Left: 1583
+INFO:root:[01:34:56]:  Process 1 started Store 3 7 | Service Time Left: 1464
+INFO:root:[01:34:57]:  Process 1 finished Store 3 7 value: False | Service Time Left: 1464
+INFO:root:[01:34:57]:  Process 1 started Lookup 3 | Service Time Left: 817
+INFO:root:[01:34:57]:  Memory Disk Manager Swap: ID 3 with ID 1
+INFO:root:[01:34:57]:  Process 0 started | Service Time Left: 3001
+INFO:root:[01:34:57]:  Process 0 started Lookup 2 | Service Time Left: 3001
+INFO:root:[01:34:57]:  Process 1 finished Lookup 3 value: 7 | Service Time Left: 817
+INFO:root:[01:34:57]:  Process 1 started Release 1 | Service Time Left: 255
+INFO:root:[01:34:58]:  Process 1 finished Release 1 value: ['1', '5', 1503] | Service Time Left: 255
+INFO:root:[01:34:58]:  Process 1 finished | Service Time Left: -3
+INFO:root:[01:34:58]:  Process 0 finished Lookup 2 value: 3 | Service Time Left: 3001
+INFO:root:[01:34:58]:  Process 0 started Store 1 8 | Service Time Left: 2429
+INFO:root:[01:34:58]:  Process 0 finished Store 1 8 value: False | Service Time Left: 2429
+INFO:root:[01:34:58]:  Process 0 started Store 4 12 | Service Time Left: 2174
+INFO:root:[01:34:58]:  Process 0 finished Store 4 12 value: False | Service Time Left: 2174
+INFO:root:[01:34:58]:  Process 0 started Lookup 1 | Service Time Left: 2035
+INFO:root:[01:34:58]:  Memory Disk Manager Swap: ID 1 with ID 3
+INFO:root:[01:34:59]:  Process 0 finished Lookup 1 value: 8 | Service Time Left: 2035
+INFO:root:[01:35:00]:  Process 2 started | Service Time Left: 3001
+INFO:root:[01:35:00]:  Process 0 finished | Service Time Left: 1
+INFO:root:[01:35:00]:  Process 0 finished | Service Time Left: 0
+INFO:root:[01:35:03]:  Process 2 finished | Service Time Left: 0
