@@ -7,6 +7,7 @@ from multiprocessing import Semaphore, Lock
 logging.basicConfig(
     filename="Assignment 3/output.txt", level=logging.INFO, filemode="w"
 )
+vmfile = "Assignment 3/virtual_memory.txt"
 
 logger = logging.getLogger()
 
@@ -38,6 +39,12 @@ class Memory_Disk:
         self.memory = [None]*memsize
         self.empty = Semaphore(memsize)
         self.start = starttime
+        try:
+            self.virtual_mem = open(vmfile, 'r')
+            self.disk = [[int(j) if i == len(l.split('\t'))-1 else j for j, i in zip(l.split("\t"), range(len(l.split("\t"))))] for l in self.virtual_mem.readlines()]
+            self.virtual_mem.close()
+        except:
+            pass
 
     def updateTime(self): #Updates the current time within the class
         self.time = round(time.time()*1000) - self.start
@@ -113,7 +120,11 @@ class Memory_Disk:
         
         if self.memFreeSlots() == 0: # If memory is FULL, store into disk
             try:
-                self.disk.append([id, value, self.time])
+                if len(self.disk) == 0 or not any([id == mem[0] for mem in self.disk]):
+                    self.disk.append([id, value, self.time])
+                else:
+                    self.disk = [[id, value, self.time] if id == mem[0] else mem for mem in self.disk]
+                self.diskhelper()
                 output = False
             finally:
                 self.mutex.release()
@@ -137,26 +148,26 @@ class Memory_Disk:
 
     def release(self, id): #Releases an id-value pair from the memory and returns the id, value list. Returns -1 if it does not exist.
         if RELEASEMODE:
-                """
-                This release() will release a variable from memory ONLY. If it's in the disk, it will return -1.
-                """
-                self.mutex.acquire()
-                try:
-                    index = self.lookupMemory(id)
+            """
+            This release() will release a variable from memory ONLY. If it's in the disk, it will return -1.
+            """
+            self.mutex.acquire()
+            try:
+                index = self.lookupMemory(id)
 
-                    if index != -1: #Check if the id currently exists in the memory
-                        # self.updateLastAccess(self.memory[index])
-                        idvalue = self.memory[index]
-                        self.memory[index] = None
+                if index != -1: #Check if the id currently exists in the memory
+                    # self.updateLastAccess(self.memory[index])
+                    idvalue = self.memory[index]
+                    self.memory[index] = None
 
-                        self.empty.release()
-                        output = idvalue
-                    else:
-                        output = -1
-                finally:
-                    self.mutex.release()
-            
-                return output
+                    self.empty.release()
+                    output = idvalue
+                else:
+                    output = -1
+            finally:
+                self.mutex.release()
+        
+            return output
         
         else:
             """
@@ -178,6 +189,7 @@ class Memory_Disk:
                     idvalue = self.disk.pop(index)
 
                     output = idvalue
+                    self.diskhelper()
                 else:
                     output = -1
             finally:
@@ -205,6 +217,7 @@ class Memory_Disk:
                         output = self.disk[diskindex][1]
                         self.storehelper(self.disk[diskindex][0], self.disk[diskindex][1])
                         del self.disk[diskindex]
+                        self.diskhelper()
                     finally:
                         self.empty.release()
 
@@ -226,6 +239,7 @@ class Memory_Disk:
                     )
                     del self.disk[diskindex]
                     self.disk.append(leastrecent)
+                    self.diskhelper()
 
             else: output = -1
         
@@ -250,6 +264,13 @@ class Memory_Disk:
             toprint += str(self.disk[i][0]) + " | " + self.disk[i][1] + " | " + str(self.disk[i][2]) + "\n"
         toprint += "\n"
         print(toprint)
+
+    def diskhelper(self):
+        self.virtual_mem = open(vmfile, 'w')
+        output = "\n".join(["\t".join([mem[0], mem[1], str(mem[2])]) for mem in self.disk])
+        self.virtual_mem.write(output)
+        self.virtual_mem.close()
+
             
 """
 Test
