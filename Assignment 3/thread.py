@@ -12,16 +12,6 @@ logging.basicConfig(
 
 logger = logging.getLogger()
 
-"""
-Instructions for Threads:
-- run() always loops and checks if there is a command assigned to it
-  - If a command has been assigned, complete the command and do time.sleep(randint(100, 1000)/1000) to simulate an API call
-  - If self.time is 0, then you stop running like in assignment 2
-  - If self.time > 1000, the thread must be made available to get assigned a command (i.e set the status to something other than Finished/Paused) otherwise you shouldnt accept any
-- Create any function that you want to be assigned a command keep in mind that this file will need imports from the memory/disk functions that Justin is doing
-"""
-
-
 class Thread(threading.Thread):
     """
     This is a custom Thread class that uses
@@ -133,6 +123,18 @@ class Thread(threading.Thread):
                     # freeze count down
                     self.dead_Line = self.time + round(time.time() * 1000)
                 time.sleep(0.001)
+
+            self.started = False
+            # print(f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ", f"{self.name} finished")
+            logger.info(
+                " ".join(
+                    [
+                        f"[{dt.datetime.now().strftime('%H:%M:%S')}]: ",
+                        f"{self.name} finished |",
+                        f"Service Time Left: {self.time}",
+                    ]
+                )
+            )
 
     def join(self, timeout: float = 2) -> None:
         super().join(timeout)
